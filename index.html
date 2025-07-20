@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>موقع خضار خليل الرياطي</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Tahoma', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #91be92;
+      color: white;
+      padding: 1em;
+      text-align: center;
+      font-size: 1.5em;
+    }
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      background-color: #333;
+    }
+    nav button {
+      flex: 1 1 auto;
+      background-color: #333;
+      color: white;
+      border: none;
+      padding: 1em;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    nav button:hover {
+      background-color: #8da88e;
+    }
+    .page {
+      display: none;
+      padding: 2em;
+      min-height: 80vh;
+    }
+    #home {
+      background-color: #e8f5e9;
+    }
+    #vegetables {
+      background-color: #fffde7;
+    }
+    #contact {
+      background-color: #e3f2fd;
+    }
+    .active {
+      display: block;
+    }
+    .card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin: 1em auto;
+      padding: 1em;
+      max-width: 600px;
+      text-align: center;
+    }
+    .card img {
+      max-width: 100%;
+      border-radius: 10px;
+    }
+    footer {
+      text-align: center;
+      padding: 1em;
+      background-color: #eee;
+    }
+    blockquote {
+      background-color: #fff;
+      border-right: 5px solid #90bb92;
+      margin: 1em auto;
+      padding: 1em;
+      max-width: 600px;
+      font-style: italic;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      padding: 0.5em 0;
+    }
+    a {
+      color: #2e7d32;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    form input, form textarea {
+      width: 100%;
+      padding: 0.7em;
+      margin-bottom: 0.5em;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-family: 'Tahoma', sans-serif;
+      font-size: 1em;
+    }
+    form button {
+      background-color: #91be92;
+      color: white;
+      border: none;
+      padding: 0.8em 1.5em;
+      border-radius: 8px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    form button:hover {
+      background-color: #7fa97f;
+    }
+    @media (max-width: 600px) {
+      nav button {
+        font-size: 0.9em;
+        padding: 0.8em;
+      }
+      .page {
+        padding: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>خضار خليل الرياطي - من قلب السوق</header>
+  <nav>
+    <button onclick="showPage('home')">الرئيسية</button>
+    <button onclick="showPage('vegetables')">الخضار</button>
+    <button onclick="showPage('contact')">اتصل بنا</button>
+  </nav>
+
+  <div id="home" class="page active">
+    <h2>مرحباً بكم في بسطتكم المتواضعة - خليل الرياطي للخضار الطازج من قلب السوق!</h2>
+    <p>نحن هنا لنقدّم لكم أجود أنواع الخضار والفواكه يومياً، مختارة بعناية لتصل إلى موائدكم بأعلى جودة وأفضل الأسعار. نتشرف بخدمتكم من قلب مدينة العقبة، مع التوصيل السريع وخدمة ممتازة.</p>
+    <h3>خدماتنا</h3>
+    <ul>
+      <li>✅ خضار وفواكه طازجة يومياً من السوق</li>
+      <li>🚚 توصيل سريع داخل العقبة</li>
+      <li>💰 أسعار منافسة وجودة مضمونة</li>
+      <li>📦 تعبئة مرتبة ونظيفة</li>
+    </ul>
+    <div class="card">
+      <h3>🔥 عرض اليوم</h3>
+      <p>كيلو بندورة بلدية فقط بـ 0.50 دينار!</p>
+    </div>
+    <h3>آراء بعض الزبائن</h3>
+    <blockquote>“أسرع توصيل وجودة ممتازة، كل مرة بتعامل معهم بنبسط أكثر” - أم محمد</blockquote>
+    <blockquote>“البطيخ عندهم لا يعلى عليه، فخم!” - أبو أحمد</blockquote>
+    <p>📱 تواصل معنا مباشرة عبر <a href="https://wa.me/962778473323" target="_blank">واتساب</a></p>
+  </div>
+
+  <div id="vegetables" class="page">
+    <div class="card">
+      <img src="https://img.youm7.com/large/202306060811111111.jpg" alt="بطيخ عسل">
+      <p>بطيخ عسل من وادي العسل 🍉</p>
+    </div>
+    <div class="card">
+      <img src="https://media.gemini.media/img/large/2020/5/3/2020_5_3_16_41_30_655.jpg" alt="شمام">
+      <p>شمام سكري، بيبرد القلب من حر العقبة 😍</p>
+    </div>
+    <div class="card">
+      <img src="https://vid.alarabiya.net/images/2021/05/29/4bef67bb-54bf-4b05-9c23-d91590dfc613/4bef67bb-54bf-4b05-9c23-d91590dfc613_16x9_1200x676.jpg" alt="موز">
+      <p>موز مستورد درجة أولى، طعمه بيحكي لحاله 🍌</p>
+    </div>
+    <div class="card">
+      <img src="https://modo3.com/thumbs/fit630x300/216083/1552677953/%D8%A3%D9%86%D9%88%D8%A7%D8%B9_%D8%A7%D9%84%D8%AE%D9%8A%D8%A7%D8%B1.jpg" alt="خيار">
+      <p>خيار مابخلي على القلب نار 🥒</p>
+    </div>
+    <div class="card">
+      <img src="https://www.lebanon24.com/uploadImages/DocumentImages/Doc-P-717961-637287866645338826.jpg" alt="بندورة">
+      <p>بندورة بلدية بتخلي العجوز صبيه 🍅</p>
+    </div>
+    <div class="card">
+      <img src="http://images.gofreedownload.net/potatoes-vegetables-potato-217938.jpg" alt="بطاطا">
+      <p>بطاطا عقباوية، بتقرش قرش ولا أزكى 🥔</p>
+    </div>
+  </div>
+
+  <div id="contact" class="page">
+    <h2>اتصل بنا</h2>
+    <ul>
+      <li>📞 خليل: 0778473323</li>
+      <li>📞 يوسف: 0780994111</li>
+      <li>📞 أيمن: 0780098978</li>
+    </ul>
+
+    <h3>نموذج الاتصال</h3>
+    <form id="contactForm" onsubmit="submitForm(event)" class="card">
+      <label for="name">الاسم:</label><br>
+      <input type="text" id="name" name="name" required><br>
+
+      <label for="email">البريد الإلكتروني:</label><br>
+      <input type="email" id="email" name="email" required><br>
+
+      <label for="phone">رقم الهاتف:</label><br>
+      <input type="tel" id="phone" name="phone"><br>
+
+      <label for="message">الرسالة:</label><br>
+      <textarea id="message" name="message" rows="4" required></textarea><br>
+
+      <button type="submit">إرسال</button>
+      <p id="formMessage" style="color: green; margin-top: 1em;"></p>
+    </form>
+  </div>
+
+  <footer>© 2025 بسطتك - خليل الرياطي | العقبة</footer>
+
+  <script>
+    function showPage(pageId) {
+      const pages = document.querySelectorAll('.page');
+      pages.forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+    }
+
+    function submitForm(event) {
+      event.preventDefault();
+      document.getElementById('formMessage').textContent = "تم إرسال رسالتك بنجاح، شكرًا لتواصلك معنا!";
+      document.getElementById('contactForm').reset();
+    }
+    
+  </script>
+</body>
+</html>
+<!-- modify this form HTML and place wherever you want your form -->
+<form
+  action="https://formspree.io/f/xjkrpaqz"
+  method="POST"
+>
+  <label>
+    Your email:
+    <input type="email" name="email">
+  </label>
+  <label>
+    Your message:
+    <textarea name="message"></textarea>
+  </label>
+  <!-- your other form fields go here -->
+  <button type="submit">Send</button>
+</form>
