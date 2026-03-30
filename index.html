@@ -1,245 +1,358 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>موقع خضار خليل الرياطي</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Tahoma', sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #91be92;
-      color: white;
-      padding: 1em;
-      text-align: center;
-      font-size: 1.5em;
-    }
-    nav {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      background-color: #333;
-    }
-    nav button {
-      flex: 1 1 auto;
-      background-color: #333;
-      color: white;
-      border: none;
-      padding: 1em;
-      cursor: pointer;
-      font-size: 1em;
-    }
-    nav button:hover {
-      background-color: #8da88e;
-    }
-    .page {
-      display: none;
-      padding: 2em;
-      min-height: 80vh;
-    }
-    #home {
-      background-color: #e8f5e9;
-    }
-    #vegetables {
-      background-color: #fffde7;
-    }
-    #contact {
-      background-color: #e3f2fd;
-    }
-    .active {
-      display: block;
-    }
-    .card {
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      margin: 1em auto;
-      padding: 1em;
-      max-width: 600px;
-      text-align: center;
-    }
-    .card img {
-      max-width: 100%;
-      border-radius: 10px;
-    }
-    footer {
-      text-align: center;
-      padding: 1em;
-      background-color: #eee;
-    }
-    blockquote {
-      background-color: #fff;
-      border-right: 5px solid #90bb92;
-      margin: 1em auto;
-      padding: 1em;
-      max-width: 600px;
-      font-style: italic;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-    li {
-      padding: 0.5em 0;
-    }
-    a {
-      color: #2e7d32;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    form input, form textarea {
-      width: 100%;
-      padding: 0.7em;
-      margin-bottom: 0.5em;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-family: 'Tahoma', sans-serif;
-      font-size: 1em;
-    }
-    form button {
-      background-color: #91be92;
-      color: white;
-      border: none;
-      padding: 0.8em 1.5em;
-      border-radius: 8px;
-      font-size: 1em;
-      cursor: pointer;
-    }
-    form button:hover {
-      background-color: #7fa97f;
-    }
-    @media (max-width: 600px) {
-      nav button {
-        font-size: 0.9em;
-        padding: 0.8em;
-      }
-      .page {
-        padding: 1em;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Block Blast - بلوك بلاست</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Tajawal:wght@400;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header>خضار خليل الرياطي - من قلب السوق</header>
-  <nav>
-    <button onclick="showPage('home')">الرئيسية</button>
-    <button onclick="showPage('vegetables')">الخضار</button>
-    <button onclick="showPage('contact')">اتصل بنا</button>
-  </nav>
 
-  <div id="home" class="page active">
-    <h2>مرحباً بكم في بسطتكم المتواضعة - خليل الرياطي للخضار الطازج من قلب السوق!</h2>
-    <p>نحن هنا لنقدّم لكم أجود أنواع الخضار والفواكه يومياً، مختارة بعناية لتصل إلى موائدكم بأعلى جودة وأفضل الأسعار. نتشرف بخدمتكم من قلب مدينة العقبة، مع التوصيل السريع وخدمة ممتازة.</p>
-    <h3>خدماتنا</h3>
-    <ul>
-      <li>✅ خضار وفواكه طازجة يومياً من السوق</li>
-      <li>🚚 توصيل سريع داخل العقبة</li>
-      <li>💰 أسعار منافسة وجودة مضمونة</li>
-      <li>📦 تعبئة مرتبة ونظيفة</li>
-    </ul>
-    <div class="card">
-      <h3>🔥 عرض اليوم</h3>
-      <p>كيلو بندورة بلدية فقط بـ 0.50 دينار!</p>
-    </div>
-    <h3>آراء بعض الزبائن</h3>
-    <blockquote>“أسرع توصيل وجودة ممتازة، كل مرة بتعامل معهم بنبسط أكثر” - أم محمد</blockquote>
-    <blockquote>“البطيخ عندهم لا يعلى عليه، فخم!” - أبو أحمد</blockquote>
-    <p>📱 تواصل معنا مباشرة عبر <a href="https://wa.me/962778473323" target="_blank">واتساب</a></p>
-  </div>
+<!-- Particles Background -->
+<div id="particles-container"></div>
+<div class="aurora aurora-1"></div>
+<div class="aurora aurora-2"></div>
+<div class="stars-layer"></div>
 
-  <div id="vegetables" class="page">
-    <div class="card">
-      <img src="https://img.youm7.com/large/202306060811111111.jpg" alt="بطيخ عسل">
-      <p>بطيخ عسل من وادي العسل 🍉</p>
-    </div>
-    <div class="card">
-      <img src="https://media.gemini.media/img/large/2020/5/3/2020_5_3_16_41_30_655.jpg" alt="شمام">
-      <p>شمام سكري، بيبرد القلب من حر العقبة 😍</p>
-    </div>
-    <div class="card">
-      <img src="https://vid.alarabiya.net/images/2021/05/29/4bef67bb-54bf-4b05-9c23-d91590dfc613/4bef67bb-54bf-4b05-9c23-d91590dfc613_16x9_1200x676.jpg" alt="موز">
-      <p>موز مستورد درجة أولى، طعمه بيحكي لحاله 🍌</p>
-    </div>
-    <div class="card">
-      <img src="https://modo3.com/thumbs/fit630x300/216083/1552677953/%D8%A3%D9%86%D9%88%D8%A7%D8%B9_%D8%A7%D9%84%D8%AE%D9%8A%D8%A7%D8%B1.jpg" alt="خيار">
-      <p>خيار مابخلي على القلب نار 🥒</p>
-    </div>
-    <div class="card">
-      <img src="https://www.lebanon24.com/uploadImages/DocumentImages/Doc-P-717961-637287866645338826.jpg" alt="بندورة">
-      <p>بندورة بلدية بتخلي العجوز صبيه 🍅</p>
-    </div>
-    <div class="card">
-      <img src="http://images.gofreedownload.net/potatoes-vegetables-potato-217938.jpg" alt="بطاطا">
-      <p>بطاطا عقباوية، بتقرش قرش ولا أزكى 🥔</p>
+<!-- Music Player -->
+<div id="music-player" class="music-player">
+  <!-- Collapsed toggle button -->
+  <div id="music-toggle" class="music-toggle" onclick="toggleMusicPanel()">
+    <span class="music-toggle-icon" id="music-toggle-icon">🎵</span>
+    <div class="music-waves" id="music-waves">
+      <span></span><span></span><span></span><span></span>
     </div>
   </div>
 
-  <div id="contact" class="page">
-    <h2>اتصل بنا</h2>
-    <ul>
-      <li>📞 خليل: 0778473323</li>
-      <li>📞 يوسف: 0780994111</li>
-      <li>📞 أيمن: 0780098978</li>
-    </ul>
+  <!-- Expanded panel -->
+  <div id="music-panel" class="music-panel hidden">
+    <div class="music-panel-header">
+      <span data-ar="🎵 المشغّل" data-en="🎵 Player">🎵 المشغّل</span>
+      <button class="music-close" onclick="toggleMusicPanel()">✕</button>
+    </div>
 
-    <h3>نموذج الاتصال</h3>
-    <form id="contactForm" onsubmit="submitForm(event)" class="card">
-      <label for="name">الاسم:</label><br>
-      <input type="text" id="name" name="name" required><br>
+    <div class="now-playing">
+      <div class="track-art" id="track-art">🎵</div>
+      <div class="track-info">
+        <div class="track-name" id="track-name">Lofi Chill</div>
+        <div class="track-artist" id="track-artist">Lo-fi Music</div>
+      </div>
+    </div>
 
-      <label for="email">البريد الإلكتروني:</label><br>
-      <input type="email" id="email" name="email" required><br>
+    <!-- Progress bar -->
+    <div class="progress-area">
+      <span class="time-label" id="time-curr">0:00</span>
+      <div class="progress-bar" id="progress-bar" onclick="seekMusic(event)">
+        <div class="progress-fill" id="progress-fill"></div>
+        <div class="progress-thumb" id="progress-thumb"></div>
+      </div>
+      <span class="time-label" id="time-total">0:00</span>
+    </div>
 
-      <label for="phone">رقم الهاتف:</label><br>
-      <input type="tel" id="phone" name="phone"><br>
+    <!-- Controls -->
+    <div class="music-controls">
+      <button class="ctrl-btn" onclick="prevTrack()" title="السابق">⏮</button>
+      <button class="ctrl-btn ctrl-play" id="play-pause-btn" onclick="togglePlayPause()">▶</button>
+      <button class="ctrl-btn" onclick="nextTrack()" title="التالي">⏭</button>
+    </div>
 
-      <label for="message">الرسالة:</label><br>
-      <textarea id="message" name="message" rows="4" required></textarea><br>
+    <div class="quick-picks">
+      <div class="quick-picks-label" data-ar="اختر الأغنية مباشرة" data-en="Pick a track instantly">اختر الأغنية مباشرة</div>
+      <div class="quick-picks-grid" id="quick-picks-grid"></div>
+    </div>
 
-      <button type="submit">إرسال</button>
-      <p id="formMessage" style="color: green; margin-top: 1em;"></p>
-    </form>
+    <!-- Volume -->
+    <div class="volume-area">
+      <span>🔈</span>
+      <input type="range" id="volume-slider" class="volume-slider" min="0" max="100" value="60" oninput="setVolume(this.value)">
+      <span>🔊</span>
+    </div>
+
+    <!-- Track list -->
+    <div class="track-list" id="track-list"></div>
   </div>
+</div>
 
-  <footer>© 2025 بسطتك - خليل الرياطي | العقبة</footer>
+<!-- Language Toggle -->
+<div id="lang-btn" class="lang-btn" onclick="toggleLang()">
+  <span id="lang-text">EN</span>
+</div>
 
-  <script>
-    function showPage(pageId) {
-      const pages = document.querySelectorAll('.page');
-      pages.forEach(p => p.classList.remove('active'));
-      document.getElementById(pageId).classList.add('active');
-    }
+<!-- ===== WELCOME / SETUP SCREEN (first time only) ===== -->
+<div id="setup-screen" class="screen active">
+  <div class="setup-container">
+    <div class="hero-badge" data-ar="نسخة نيون فضائية" data-en="Neon Galaxy Edition">نسخة نيون فضائية</div>
+    <div class="logo-blocks">
+      <div class="lb lb1"></div><div class="lb lb2"></div><div class="lb lb3"></div>
+      <div class="lb lb4"></div><div class="lb lb5"></div><div class="lb lb6"></div>
+    </div>
+    <h1 class="game-title">BLOCK<span>BLAST</span></h1>
+    <p class="game-subtitle" data-ar="انفجر البلوكات وارتقِ للقمة!" data-en="Blast blocks and rise to the top!">انفجر البلوكات وارتقِ للقمة!</p>
+    <div class="setup-card">
+      <p class="setup-label" data-ar="✏️ اكتب اسمك للبدء" data-en="✏️ Enter your name to start">✏️ اكتب اسمك للبدء</p>
+      <div class="setup-avatars">
+        <span class="setup-av selected" onclick="pickAvatar(this,'🎮')">🎮</span>
+        <span class="setup-av" onclick="pickAvatar(this,'🦁')">🦁</span>
+        <span class="setup-av" onclick="pickAvatar(this,'🐉')">🐉</span>
+        <span class="setup-av" onclick="pickAvatar(this,'🦊')">🦊</span>
+        <span class="setup-av" onclick="pickAvatar(this,'🤖')">🤖</span>
+        <span class="setup-av" onclick="pickAvatar(this,'👾')">👾</span>
+        <span class="setup-av" onclick="pickAvatar(this,'🐺')">🐺</span>
+        <span class="setup-av" onclick="pickAvatar(this,'🦅')">🦅</span>
+      </div>
+      <div class="input-group">
+        <span class="input-icon" id="setup-av-preview">🎮</span>
+        <input type="text" id="setup-name" maxlength="20"
+               placeholder="اسمك هنا…"
+               data-ph-ar="اسمك هنا…" data-ph-en="Your name here…"
+               oninput="validateSetupName()"
+               onkeydown="if(event.key==='Enter')createProfile()">
+      </div>
+      <button class="play-btn" id="setup-go-btn" onclick="createProfile()" disabled>
+        <span data-ar="🚀 ابدأ اللعبة!" data-en="🚀 Start Playing!">🚀 ابدأ اللعبة!</span>
+        <div class="btn-shine"></div>
+      </button>
+    </div>
+    <div class="floating-blocks-menu">
+      <div class="fb fb1"></div><div class="fb fb2"></div>
+      <div class="fb fb3"></div><div class="fb fb4"></div>
+    </div>
+  </div>
+</div>
 
-    function submitForm(event) {
-      event.preventDefault();
-      document.getElementById('formMessage').textContent = "تم إرسال رسالتك بنجاح، شكرًا لتواصلك معنا!";
-      document.getElementById('contactForm').reset();
-    }
-    
-  </script>
+<!-- ===== MAIN MENU ===== -->
+<div id="menu-screen" class="screen">
+  <div class="menu-container">
+    <div class="menu-header">
+      <div class="user-greeting">
+        <div class="avatar-circle" id="menu-avatar">🎮</div>
+        <div>
+          <p class="greeting-text" data-ar="مرحباً،" data-en="Welcome,">مرحباً،</p>
+          <h2 id="menu-username">لاعب</h2>
+        </div>
+      </div>
+      <div class="header-score">
+        <div class="score-badge">
+          <span>⭐</span>
+          <span id="menu-score">0</span>
+        </div>
+      </div>
+    </div>
+
+    <h1 class="menu-title">BLOCK<span>BLAST</span></h1>
+
+    <div class="menu-buttons">
+      <button class="menu-btn btn-play" onclick="showLevelSelect()">
+        <span class="btn-icon">🎮</span>
+        <span data-ar="العب" data-en="Play">العب</span>
+      </button>
+      <button class="menu-btn btn-profile" onclick="showProfile()">
+        <span class="btn-icon">👤</span>
+        <span data-ar="الملف الشخصي" data-en="Profile">الملف الشخصي</span>
+      </button>
+      <button class="menu-btn btn-leaderboard" onclick="showLeaderboard()">
+        <span class="btn-icon">🏆</span>
+        <span data-ar="المتصدرون" data-en="Leaderboard">المتصدرون</span>
+      </button>
+      <button class="menu-btn btn-editname" onclick="showEditName()">
+        <span class="btn-icon">✏️</span>
+        <span data-ar="تعديل الاسم" data-en="Edit Name">تعديل الاسم</span>
+      </button>
+    </div>
+
+    <div class="floating-blocks-menu">
+      <div class="fb fb1"></div><div class="fb fb2"></div>
+      <div class="fb fb3"></div><div class="fb fb4"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LEVEL SELECT ===== -->
+<div id="level-screen" class="screen">
+  <div class="level-container">
+    <button class="back-btn" onclick="showMenu()">← <span data-ar="رجوع" data-en="Back">رجوع</span></button>
+    <h2 class="section-title" data-ar="🎯 اختر المستوى" data-en="🎯 Choose Level">🎯 اختر المستوى</h2>
+    <div class="levels-grid" id="levels-grid"></div>
+  </div>
+</div>
+
+<!-- ===== GAME SCREEN ===== -->
+<div id="game-screen" class="screen">
+  <div class="game-layout">
+    <!-- Top Bar -->
+    <div class="game-topbar">
+      <button class="icon-btn" onclick="pauseGame()">⏸</button>
+      <div class="game-info">
+        <div class="info-box">
+          <span class="info-label" data-ar="المستوى" data-en="Level">المستوى</span>
+          <span class="info-val" id="curr-level">1</span>
+        </div>
+        <div class="info-box score-box">
+          <span class="info-label" data-ar="النقاط" data-en="Score">النقاط</span>
+          <span class="info-val" id="curr-score">0</span>
+        </div>
+        <div class="info-box">
+          <span class="info-label" data-ar="الهدف" data-en="Target">الهدف</span>
+          <span class="info-val" id="target-score">500</span>
+        </div>
+      </div>
+      <button class="icon-btn" onclick="showMenu()">🏠</button>
+    </div>
+
+    <!-- Game Board -->
+    <div class="board-wrapper">
+      <div class="board-shell">
+        <div class="board-shell-header">
+          <div class="board-shell-badge" data-ar="منطقة اللعب" data-en="Play Zone">منطقة اللعب</div>
+          <div class="board-shell-lights">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+        <div class="combo-display" id="combo-display"></div>
+        <div id="game-board" class="game-board"></div>
+      </div>
+    </div>
+
+    <!-- Pieces Area -->
+    <div class="pieces-area">
+      <div class="pieces-label" data-ar="البلوكات" data-en="Pieces">البلوكات</div>
+      <div class="pieces-container" id="pieces-container"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PROFILE SCREEN ===== -->
+<div id="profile-screen" class="screen">
+  <div class="profile-container">
+    <button class="back-btn" onclick="showMenu()">← <span data-ar="رجوع" data-en="Back">رجوع</span></button>
+    <h2 class="section-title" data-ar="👤 الملف الشخصي" data-en="👤 Profile">👤 الملف الشخصي</h2>
+
+    <div class="profile-card">
+      <div class="profile-avatar" id="profile-avatar">🎮</div>
+      <h3 id="profile-name">اللاعب</h3>
+      <div class="avatar-selector">
+        <span onclick="changeAvatar('🎮')">🎮</span>
+        <span onclick="changeAvatar('🦁')">🦁</span>
+        <span onclick="changeAvatar('🐉')">🐉</span>
+        <span onclick="changeAvatar('🦊')">🦊</span>
+        <span onclick="changeAvatar('🤖')">🤖</span>
+        <span onclick="changeAvatar('👾')">👾</span>
+        <span onclick="changeAvatar('🐺')">🐺</span>
+        <span onclick="changeAvatar('🦅')">🦅</span>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">🏆</div>
+        <div class="stat-val" id="stat-wins">0</div>
+        <div class="stat-label" data-ar="مرات الفوز" data-en="Wins">مرات الفوز</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-val" id="stat-score">0</div>
+        <div class="stat-label" data-ar="أعلى نقاط" data-en="High Score">أعلى نقاط</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🎮</div>
+        <div class="stat-val" id="stat-games">0</div>
+        <div class="stat-label" data-ar="مباريات" data-en="Games">مباريات</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🔥</div>
+        <div class="stat-val" id="stat-streak">0</div>
+        <div class="stat-label" data-ar="أطول سلسلة" data-en="Best Streak">أطول سلسلة</div>
+      </div>
+    </div>
+
+    <div class="achievements-section">
+      <h3 data-ar="🏅 الإنجازات" data-en="🏅 Achievements">🏅 الإنجازات</h3>
+      <div class="achievements-grid" id="achievements-grid"></div>
+    </div>
+
+    <div class="history-section">
+      <h3 data-ar="📊 سجل المباريات" data-en="📊 Game History">📊 سجل المباريات</h3>
+      <div class="history-list" id="history-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LEADERBOARD ===== -->
+<div id="leaderboard-screen" class="screen">
+  <div class="leaderboard-container">
+    <button class="back-btn" onclick="showMenu()">← <span data-ar="رجوع" data-en="Back">رجوع</span></button>
+    <h2 class="section-title" data-ar="🏆 المتصدرون" data-en="🏆 Leaderboard">🏆 المتصدرون</h2>
+    <div class="leaderboard-list" id="leaderboard-list"></div>
+  </div>
+</div>
+
+<!-- ===== PAUSE MODAL ===== -->
+<div id="pause-modal" class="modal hidden">
+  <div class="modal-box">
+    <h3 data-ar="⏸ متوقف" data-en="⏸ Paused">⏸ متوقف</h3>
+    <button class="modal-btn btn-resume" onclick="resumeGame()"><span data-ar="استمرار" data-en="Resume">استمرار</span></button>
+    <button class="modal-btn btn-restart" onclick="restartGame()"><span data-ar="إعادة" data-en="Restart">إعادة</span></button>
+    <button class="modal-btn btn-quit" onclick="showMenu()"><span data-ar="خروج" data-en="Quit">خروج</span></button>
+  </div>
+</div>
+
+<!-- ===== WIN MODAL ===== -->
+<div id="win-modal" class="modal hidden">
+  <div class="modal-box win-box">
+    <div class="win-stars" id="win-stars"></div>
+    <h3 data-ar="🎉 رائع!" data-en="🎉 Amazing!">🎉 رائع!</h3>
+    <p class="win-score" id="win-score-text"></p>
+    <div class="win-badges" id="win-badges"></div>
+    <button class="modal-btn btn-play" onclick="nextLevel()"><span data-ar="المستوى التالي ▶" data-en="Next Level ▶">المستوى التالي ▶</span></button>
+    <button class="modal-btn btn-quit" onclick="showMenu()"><span data-ar="القائمة" data-en="Menu">القائمة</span></button>
+  </div>
+</div>
+
+<!-- ===== GAME OVER MODAL ===== -->
+<div id="gameover-modal" class="modal hidden">
+  <div class="modal-box gameover-box">
+    <h3 data-ar="💥 انتهت اللعبة" data-en="💥 Game Over">💥 انتهت اللعبة</h3>
+    <p class="gameover-score" id="go-score-text"></p>
+    <button class="modal-btn btn-restart" onclick="restartGame()"><span data-ar="حاول مجدداً" data-en="Try Again">حاول مجدداً</span></button>
+    <button class="modal-btn btn-quit" onclick="showMenu()"><span data-ar="القائمة" data-en="Menu">القائمة</span></button>
+  </div>
+</div>
+
+<!-- ===== EDIT NAME MODAL ===== -->
+<div id="editname-modal" class="modal hidden">
+  <div class="modal-box editname-box">
+    <h3 data-ar="✏️ تعديل الملف" data-en="✏️ Edit Profile">✏️ تعديل الملف</h3>
+    <div class="setup-avatars" id="edit-avatars">
+      <span class="setup-av" onclick="pickEditAvatar(this,'🎮')">🎮</span>
+      <span class="setup-av" onclick="pickEditAvatar(this,'🦁')">🦁</span>
+      <span class="setup-av" onclick="pickEditAvatar(this,'🐉')">🐉</span>
+      <span class="setup-av" onclick="pickEditAvatar(this,'🦊')">🦊</span>
+      <span class="setup-av" onclick="pickEditAvatar(this,'🤖')">🤖</span>
+      <span class="setup-av" onclick="pickEditAvatar(this,'👾')">👾</span>
+      <span class="setup-av" onclick="pickEditAvatar(this,'🐺')">🐺</span>
+      <span class="setup-av" onclick="pickEditAvatar(this,'🦅')">🦅</span>
+    </div>
+    <div class="input-group" style="margin:16px 0">
+      <span class="input-icon" id="edit-av-preview">🎮</span>
+      <input type="text" id="edit-name-input" maxlength="20"
+             placeholder="اسمك الجديد…"
+             data-ph-ar="اسمك الجديد…" data-ph-en="New name…"
+             oninput="validateEditName()"
+             onkeydown="if(event.key==='Enter')saveEditName()">
+    </div>
+    <button class="modal-btn btn-resume" id="edit-save-btn" onclick="saveEditName()">
+      <span data-ar="💾 حفظ" data-en="💾 Save">💾 حفظ</span>
+    </button>
+    <button class="modal-btn btn-quit" onclick="closeEditName()">
+      <span data-ar="إلغاء" data-en="Cancel">إلغاء</span>
+    </button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<script src="game.js"></script>
 </body>
 </html>
-<!-- modify this form HTML and place wherever you want your form -->
-<form
-  action="https://formspree.io/f/xjkrpaqz"
-  method="POST"
->
-  <label>
-    Your email:
-    <input type="email" name="email">
-  </label>
-  <label>
-    Your message:
-    <textarea name="message"></textarea>
-  </label>
-  <!-- your other form fields go here -->
-  <button type="submit">Send</button>
-</form>
