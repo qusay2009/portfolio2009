@@ -143,9 +143,12 @@
     <h1 class="menu-title">BLOCK<span>BLAST</span></h1>
 
     <div class="menu-buttons">
-      <button class="menu-btn btn-play" onclick="showLevelSelect()">
-        <span class="btn-icon">🎮</span>
-        <span data-ar="العب" data-en="Play">العب</span>
+      <button class="menu-btn btn-games" onclick="showGamesHub()">
+        <span class="btn-icon">🕹️</span>
+        <span class="menu-btn-copy">
+          <strong data-ar="الألعاب" data-en="Games">الألعاب</strong>
+          <small data-ar="اختر لعبة ثم اختر المستوى" data-en="Pick a game, then choose a level">اختر لعبة ثم اختر المستوى</small>
+        </span>
       </button>
       <button class="menu-btn btn-profile" onclick="showProfile()">
         <span class="btn-icon">👤</span>
@@ -168,12 +171,46 @@
   </div>
 </div>
 
+<!-- ===== GAMES HUB ===== -->
+<div id="games-screen" class="screen">
+  <div class="games-container">
+    <button class="back-btn" onclick="showMenu()">← <span data-ar="رجوع" data-en="Back">رجوع</span></button>
+    <h2 class="section-title" data-ar="🎮 اختر اللعبة" data-en="🎮 Choose Game">🎮 اختر اللعبة</h2>
+    <div class="games-grid">
+      <button class="game-choice-card choice-block" onclick="showLevelSelect()">
+        <span class="game-choice-icon">🧩</span>
+        <strong>Block Blast</strong>
+        <small data-ar="رتّب البلوكات وحقق الهدف" data-en="Place blocks and reach the target">رتّب البلوكات وحقق الهدف</small>
+      </button>
+      <button class="game-choice-card choice-memory" onclick="showMemoryLevels()">
+        <span class="game-choice-icon">🧠</span>
+        <strong data-ar="لعبة الذاكرة" data-en="Memory Match">لعبة الذاكرة</strong>
+        <small data-ar="اختر صعوبة الذاكرة وابدأ" data-en="Choose a memory difficulty and start">اختر صعوبة الذاكرة وابدأ</small>
+      </button>
+      <button class="game-choice-card choice-raid" onclick="showDesertRaid()">
+        <span class="game-choice-icon">🚀</span>
+        <strong data-ar="نيون سترايك" data-en="Neon Strike">نيون سترايك</strong>
+        <small data-ar="معارك سايبربانك ومؤثرات نيون" data-en="Cyberpunk battles & neon effects">معارك سايبربانك ومؤثرات نيون</small>
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- ===== LEVEL SELECT ===== -->
 <div id="level-screen" class="screen">
   <div class="level-container">
-    <button class="back-btn" onclick="showMenu()">← <span data-ar="رجوع" data-en="Back">رجوع</span></button>
+    <button class="back-btn" onclick="showGamesHub()">← <span data-ar="رجوع" data-en="Back">رجوع</span></button>
     <h2 class="section-title" data-ar="🎯 اختر المستوى" data-en="🎯 Choose Level">🎯 اختر المستوى</h2>
     <div class="levels-grid" id="levels-grid"></div>
+  </div>
+</div>
+
+<!-- ===== MEMORY LEVELS ===== -->
+<div id="memory-level-screen" class="screen">
+  <div class="level-container">
+    <button class="back-btn" onclick="showGamesHub()">← <span data-ar="رجوع" data-en="Back">رجوع</span></button>
+    <h2 class="section-title" data-ar="🧠 اختر مستوى الذاكرة" data-en="🧠 Choose Memory Level">🧠 اختر مستوى الذاكرة</h2>
+    <div class="levels-grid memory-levels-grid" id="memory-levels-grid"></div>
   </div>
 </div>
 
@@ -202,9 +239,20 @@
 
     <!-- Game Board -->
     <div class="board-wrapper">
+      <div class="level-aura" id="level-aura"></div>
+      <div class="level-progress-card">
+        <div class="level-progress-head">
+          <span id="level-theme-name" data-ar="مجرة البداية" data-en="Starter Galaxy">مجرة البداية</span>
+          <span id="level-progress-text">0%</span>
+        </div>
+        <div class="level-progress-bar">
+          <div class="level-progress-fill" id="level-progress-fill"></div>
+        </div>
+      </div>
       <div class="board-shell">
         <div class="board-shell-header">
           <div class="board-shell-badge" data-ar="منطقة اللعب" data-en="Play Zone">منطقة اللعب</div>
+          <div class="level-theme-chip" id="level-theme-chip">Nova</div>
           <div class="board-shell-lights">
             <span></span><span></span><span></span>
           </div>
@@ -222,6 +270,109 @@
   </div>
 </div>
 
+<!-- ===== MEMORY GAME ===== -->
+<div id="memory-screen" class="screen">
+  <div class="memory-container">
+    <div class="memory-topbar">
+      <button class="back-btn" onclick="showMemoryLevels()">← <span data-ar="رجوع" data-en="Back">رجوع</span></button>
+      <button class="icon-btn" onclick="restartMemoryGame()">↻</button>
+    </div>
+
+    <div class="memory-hero">
+      <h2 class="section-title" data-ar="🧠 لعبة الذاكرة" data-en="🧠 Memory Match">🧠 لعبة الذاكرة</h2>
+      <p class="memory-subtitle" data-ar="اقلب البطاقات وطابق كل الرموز بأقل عدد حركات." data-en="Flip cards and match all symbols in the fewest moves.">اقلب البطاقات وطابق كل الرموز بأقل عدد حركات.</p>
+    </div>
+
+    <div class="memory-stats">
+      <div class="memory-stat-card">
+        <span class="memory-stat-label" data-ar="الحركات" data-en="Moves">الحركات</span>
+        <strong id="memory-moves">0</strong>
+      </div>
+      <div class="memory-stat-card">
+        <span class="memory-stat-label" data-ar="المطابقات" data-en="Matches">المطابقات</span>
+        <strong id="memory-pairs">0/8</strong>
+      </div>
+      <div class="memory-stat-card">
+        <span class="memory-stat-label" data-ar="أفضل نتيجة" data-en="Best">أفضل نتيجة</span>
+        <strong id="memory-best">--</strong>
+      </div>
+      <div class="memory-stat-card">
+        <span class="memory-stat-label" data-ar="الوقت" data-en="Time">الوقت</span>
+        <strong id="memory-time">00:00</strong>
+      </div>
+    </div>
+
+    <div class="memory-board-wrap">
+      <div class="memory-board" id="memory-board"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DESERT RAID GAME ===== -->
+<div id="raid-screen" class="screen">
+  <div class="raid-container">
+    <div class="raid-topbar">
+      <button class="back-btn" onclick="showGamesHub()">← <span data-ar="رجوع" data-en="Back">رجوع</span></button>
+      <div class="raid-score-box raid-lives-box">
+        <span data-ar="الفرص" data-en="Lives">الفرص</span>
+        <strong id="raid-lives" style="color:#ff4757; text-shadow: 0 0 10px #ff4757;">❤️❤️❤️</strong>
+      </div>
+      <div class="raid-score-box">
+        <span data-ar="النقاط" data-en="Score">النقاط</span>
+        <strong id="raid-score">0</strong>
+      </div>
+      <div class="raid-fuel-box">
+        <span data-ar="الوقود" data-en="Fuel">الوقود</span>
+        <div class="raid-fuel-bar"><div id="raid-fuel-fill" style="width: 100%;"></div></div>
+      </div>
+    </div>
+    <div class="raid-game-wrap">
+      <canvas id="raid-canvas"></canvas>
+      <div id="raid-overlay" class="raid-overlay cyberpunk-overlay">
+        <div class="cyberpunk-bg-elements">
+          <div class="cyber-grid"></div>
+        </div>
+        
+        <div class="cyber-overlay-content">
+          <div class="cyber-top-bar">
+             <div class="cyber-high-score">
+               <span class="shield-icon">🏆</span>
+               <div class="score-info">
+                 <small data-ar="أعلى نتيجة" data-en="High Score">أعلى نتيجة</small>
+                 <span id="cyber-high-score-val">0</span>
+               </div>
+             </div>
+             <div class="cyber-actions">
+               <button class="icon-btn cyber-btn-small" onclick="openCyberCharModal()">👾</button>
+               <button class="icon-btn cyber-btn-small" onclick="openCyberSettingsModal()">⚙️</button>
+             </div>
+          </div>
+          
+          <h1 class="cyber-title">NEON<br><span>STRIKE</span></h1>
+          
+          <p id="cyber-motivational" class="cyber-motivational" data-ar="هل أنت مستعد للنجاة؟" data-en="Are you ready to survive?">هل أنت مستعد للنجاة؟</p>
+          
+          <button class="cyber-play-btn" onclick="triggerCyberStart()">
+            <span class="btn-glitch" data-text="ابدأ القتال 🚀"></span>
+            <span class="btn-text" data-ar="ابدأ القتال 🚀" data-en="Start Strike 🚀">ابدأ القتال 🚀</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Mobile Controls -->
+    <div class="raid-skills">
+      <button class="skill-btn" id="btn-dash" onclick="raidUseDash()">Dash ⚡</button>
+      <button class="skill-btn" id="btn-shield" onclick="raidUseShield()">Shield 🛡️</button>
+      <button class="skill-btn" id="btn-slow" onclick="raidUseSlow()">Time 🕰️</button>
+    </div>
+    <div class="raid-controls" id="raid-controls">
+      <button class="raid-btn" ontouchstart="raidMove(-1)" ontouchend="raidStop()" onmousedown="raidMove(-1)" onmouseup="raidStop()" onmouseleave="raidStop()">◀</button>
+      <button class="raid-btn raid-shoot-btn" ontouchstart="raidShoot()" onmousedown="raidShoot()">🎯</button>
+      <button class="raid-btn" ontouchstart="raidMove(1)" ontouchend="raidStop()" onmousedown="raidMove(1)" onmouseup="raidStop()" onmouseleave="raidStop()">▶</button>
+    </div>
+  </div>
+</div>
+
 <!-- ===== PROFILE SCREEN ===== -->
 <div id="profile-screen" class="screen">
   <div class="profile-container">
@@ -229,7 +380,17 @@
     <h2 class="section-title" data-ar="👤 الملف الشخصي" data-en="👤 Profile">👤 الملف الشخصي</h2>
 
     <div class="profile-card">
+      <div class="profile-cover" id="profile-cover">
+        <button class="upload-btn cover-upload-btn" onclick="triggerCoverUpload()" type="button">
+          <span data-ar="🖼️ غيّر الغلاف" data-en="🖼️ Change Cover">🖼️ غيّر الغلاف</span>
+        </button>
+      </div>
       <div class="profile-avatar" id="profile-avatar">🎮</div>
+      <button class="upload-btn avatar-upload-btn" onclick="triggerAvatarUpload()" type="button">
+        <span data-ar="📷 أضف صورتك" data-en="📷 Add Your Photo">📷 أضف صورتك</span>
+      </button>
+      <input type="file" id="avatar-upload-input" accept="image/*" hidden onchange="handleAvatarUpload(event)">
+      <input type="file" id="cover-upload-input" accept="image/*" hidden onchange="handleCoverUpload(event)">
       <h3 id="profile-name">اللاعب</h3>
       <div class="avatar-selector">
         <span onclick="changeAvatar('🎮')">🎮</span>
@@ -341,12 +502,61 @@
              oninput="validateEditName()"
              onkeydown="if(event.key==='Enter')saveEditName()">
     </div>
+    <button class="upload-btn modal-upload-btn" type="button" onclick="triggerAvatarUpload()">
+      <span data-ar="🖼️ اختر صورة شخصية من جهازك" data-en="🖼️ Choose a profile image from your device">🖼️ اختر صورة شخصية من جهازك</span>
+    </button>
     <button class="modal-btn btn-resume" id="edit-save-btn" onclick="saveEditName()">
       <span data-ar="💾 حفظ" data-en="💾 Save">💾 حفظ</span>
     </button>
     <button class="modal-btn btn-quit" onclick="closeEditName()">
       <span data-ar="إلغاء" data-en="Cancel">إلغاء</span>
     </button>
+  </div>
+</div>
+
+<!-- ===== CYBER CHARACTER SELECT MODAL ===== -->
+<div id="cyber-char-modal" class="modal hidden">
+  <div class="modal-box cyber-modal-box">
+    <h3 data-ar="👾 اختر مركبتك" data-en="👾 Choose Ship">👾 اختر مركبتك</h3>
+    <div class="cyber-ships-grid">
+      <!-- Emojis as fallback/extra -->
+      <div class="cyber-ship-av selected" onclick="selectCyberShip(this, '🚀')">🚀</div>
+      <div class="cyber-ship-av" onclick="selectCyberShip(this, '🛸')">🛸</div>
+      
+      <!-- Premium New Ships (from sprite sheet) -->
+      <div class="cyber-ship-av ship-img-av" onclick="selectCyberShip(this, '', 'image', 0)" style="background-image: url('assets/neon_ships.png'); background-position: 0 0;"></div>
+      <div class="cyber-ship-av ship-img-av" onclick="selectCyberShip(this, '', 'image', 1)" style="background-image: url('assets/neon_ships.png'); background-position: 33.3% 0;"></div>
+      <div class="cyber-ship-av ship-img-av" onclick="selectCyberShip(this, '', 'image', 2)" style="background-image: url('assets/neon_ships.png'); background-position: 66.6% 0;"></div>
+      <div class="cyber-ship-av ship-img-av" onclick="selectCyberShip(this, '', 'image', 3)" style="background-image: url('assets/neon_ships.png'); background-position: 100% 0;"></div>
+      <div class="cyber-ship-av ship-img-av" onclick="selectCyberShip(this, '', 'image', 4)" style="background-image: url('assets/neon_ships.png'); background-position: 0 33.3%;"></div>
+      <div class="cyber-ship-av ship-img-av" onclick="selectCyberShip(this, '', 'image', 5)" style="background-image: url('assets/neon_ships.png'); background-position: 33.3% 33.3%;"></div>
+      <div class="cyber-ship-av ship-img-av" onclick="selectCyberShip(this, '', 'image', 6)" style="background-image: url('assets/neon_ships.png'); background-position: 66.6% 33.3%;"></div>
+      <div class="cyber-ship-av ship-img-av" onclick="selectCyberShip(this, '', 'image', 7)" style="background-image: url('assets/neon_ships.png'); background-position: 100% 33.3%;"></div>
+    </div>
+    
+    <div class="cyber-color-picker">
+      <h4 data-ar="اختر لون الليزر / التوهج:" data-en="Laser / Glow Color:">اختر لون الليزر / التوهج:</h4>
+      <input type="color" id="cyber-color-input" value="#00ffff" onchange="changeCyberColor(this.value)">
+    </div>
+    
+    <button class="modal-btn btn-resume" onclick="closeCyberCharModal()"><span data-ar="تأكيد" data-en="Confirm">تأكيد</span></button>
+  </div>
+</div>
+
+<!-- ===== CYBER SETTINGS MODAL ===== -->
+<div id="cyber-settings-modal" class="modal hidden">
+  <div class="modal-box cyber-modal-box">
+    <h3 data-ar="⚙️ إعدادات المعركة" data-en="⚙️ Battle Settings">⚙️ إعدادات المعركة</h3>
+    
+    <div class="volume-area" style="margin-top:20px;">
+      <span>🔈</span>
+      <input type="range" id="cyber-volume" class="volume-slider" min="0" max="100" value="60" oninput="setVolume(this.value)">
+      <span>🔊</span>
+    </div>
+    
+    <button class="modal-btn" onclick="toggleLang()" style="margin-top:20px; background:rgba(255,255,255,0.1);"><span data-ar="تغيير اللغة (EN/AR)" data-en="Change Language (AR/EN)">تغيير اللغة (EN/AR)</span></button>
+
+    <button class="modal-btn btn-resume" onclick="closeCyberSettingsModal()" style="margin-top:20px;"><span data-ar="حفظ وإغلاق" data-en="Save & Close">حفظ وإغلاق</span></button>
   </div>
 </div>
 

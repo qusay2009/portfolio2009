@@ -1,4 +1,4 @@
-﻿// ===== BLOCK BLAST GAME ENGINE =====
+// ===== BLOCK BLAST GAME ENGINE =====
 
 // ===== STATE =====
 let currentLang = 'ar';
@@ -16,7 +16,41 @@ let gameState = {
   gamePaused: false
 };
 
+let memoryState = {
+  cards: [],
+  flipped: [],
+  matchedPairs: 0,
+  moves: 0,
+  locked: false,
+  level: 1,
+  pairCount: 8
+};
+
 const BOARD_SIZE = 8;
+const MEMORY_LEVELS = [
+  { id: 1, name: { ar: 'مبتدئ ✨', en: 'Beginner' }, pairs: 4, cols: 4, diff: 1 },
+  { id: 2, name: { ar: 'سهل 🌱', en: 'Easy' }, pairs: 6, cols: 4, diff: 1 },
+  { id: 3, name: { ar: 'متوسط ⚡', en: 'Medium' }, pairs: 8, cols: 4, diff: 2 },
+  { id: 4, name: { ar: 'متقدم 🔥', en: 'Advanced' }, pairs: 10, cols: 5, diff: 2 },
+  { id: 5, name: { ar: 'صعب 💎', en: 'Hard' }, pairs: 12, cols: 6, diff: 3 },
+  { id: 6, name: { ar: 'احترافي 🏆', en: 'Pro' }, pairs: 15, cols: 6, diff: 3 },
+  { id: 7, name: { ar: 'أسطوري 🐉', en: 'Legendary' }, pairs: 18, cols: 6, diff: 3 },
+  { id: 8, name: { ar: 'مستحيل 🛸', en: 'Impossible' }, pairs: 24, cols: 8, diff: 3 },
+];
+const LEVEL_THEMES = [
+  { ar: 'مجرة البداية', en: 'Starter Galaxy', chip: 'Nova', colors: ['#62d5ff', '#7f5cff', '#ffcf5a'] },
+  { ar: 'شهب ذهبية', en: 'Meteor Gold', chip: 'Solar', colors: ['#ffb347', '#ff7a59', '#ffe76a'] },
+  { ar: 'ضباب زمردي', en: 'Emerald Mist', chip: 'Mist', colors: ['#47f5a0', '#00d2ff', '#8dff73'] },
+  { ar: 'نيون ليلي', en: 'Midnight Neon', chip: 'Neon', colors: ['#7b61ff', '#ff63b8', '#6ac3ff'] },
+  { ar: 'لهيب النجوم', en: 'Starfire', chip: 'Blaze', colors: ['#ff6d6d', '#ff9f43', '#ffd166'] },
+  { ar: 'بحر كوني', en: 'Cosmic Tide', chip: 'Tide', colors: ['#00d2ff', '#1e90ff', '#7a7cff'] },
+  { ar: 'أورورا أسطورية', en: 'Legend Aurora', chip: 'Aura', colors: ['#8cff6a', '#00ffa3', '#66c7ff'] },
+  { ar: 'عاصفة ليلية', en: 'Night Storm', chip: 'Storm', colors: ['#6f7bff', '#00bfff', '#d46bff'] },
+  { ar: 'جحيم الكواكب', en: 'Inferno Orbit', chip: 'Inferno', colors: ['#ff5c5c', '#ff7a00', '#ffd166'] },
+  { ar: 'تاج المجرة', en: 'Galaxy Crown', chip: 'Crown', colors: ['#ffd700', '#ff67c4', '#6ae3ff'] },
+  { ar: 'غزو الشفق', en: 'Aurora Raid', chip: 'Raid', colors: ['#66ffb3', '#7f5cff', '#ffaf45'] },
+  { ar: 'أسطورة النجم', en: 'Star Legend', chip: 'Legend', colors: ['#ffffff', '#ffe76a', '#89c8ff'] },
+];
 
 // ===== LEVEL CONFIG =====
 const LEVELS = [
@@ -129,6 +163,7 @@ function toggleLang() {
   document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
   document.getElementById('lang-text').textContent = currentLang === 'ar' ? 'EN' : 'AR';
   updateLangDOM();
+  syncDynamicLocalizedUI();
 }
 function updateLangDOM() {
   document.querySelectorAll('[data-ar]').forEach(el => {
@@ -154,8 +189,8 @@ function defaultUser(username) {
   return {
     username,
     avatar: '🎮', highScore: 0, totalWins: 0, totalGames: 0,
-    bestStreak: 0, unlockedLevels: [1], completedLevels: [],
-    levelStars: {}, achievements: [], gameHistory: [], createdAt: Date.now()
+    bestStreak: 0, unlockedLevels: [1], completedLevels: [], memoryUnlockedLevels: [1],
+    levelStars: {}, achievements: [], gameHistory: [], memoryBestMoves: null, avatarImage: '', coverImage: '', createdAt: Date.now()
   };
 }
 
@@ -164,12 +199,13 @@ function defaultUser(username) {
 // Selected avatar during setup
 let setupAvatar = '🎮';
 let editAvatar  = '🎮';
+let editAvatarImage = '';
 
 function pickAvatar(el, emoji) {
   setupAvatar = emoji;
   document.querySelectorAll('.setup-avatars .setup-av').forEach(e => e.classList.remove('selected'));
   el.classList.add('selected');
-  document.getElementById('setup-av-preview').textContent = emoji;
+  renderAvatarNode(document.getElementById('setup-av-preview'), { avatar: emoji, avatarImage: '' });
   playSound('click');
 }
 
@@ -194,7 +230,8 @@ function createProfile() {
 // ---- Edit name / avatar from menu ----
 function showEditName() {
   editAvatar = currentUser.avatar || '🎮';
-  document.getElementById('edit-av-preview').textContent = editAvatar;
+  editAvatarImage = currentUser.avatarImage || '';
+  renderAvatarNode(document.getElementById('edit-av-preview'), { avatar: editAvatar, avatarImage: editAvatarImage });
   document.getElementById('edit-name-input').value = currentUser.username;
   // mark current avatar
   document.querySelectorAll('#edit-avatars .setup-av').forEach(el => {
@@ -205,9 +242,10 @@ function showEditName() {
 
 function pickEditAvatar(el, emoji) {
   editAvatar = emoji;
+  editAvatarImage = '';
   document.querySelectorAll('#edit-avatars .setup-av').forEach(e => e.classList.remove('selected'));
   el.classList.add('selected');
-  document.getElementById('edit-av-preview').textContent = emoji;
+  renderAvatarNode(document.getElementById('edit-av-preview'), { avatar: emoji, avatarImage: '' });
   playSound('click');
 }
 
@@ -228,6 +266,7 @@ function saveEditName() {
     currentUser.username = newName;
   }
   currentUser.avatar = editAvatar;
+  currentUser.avatarImage = editAvatarImage;
   saveUser(currentUser);
   localStorage.setItem('bb_active_user', currentUser.username);
 
@@ -238,6 +277,53 @@ function saveEditName() {
 
 function closeEditName() {
   document.getElementById('editname-modal').classList.add('hidden');
+}
+
+function triggerAvatarUpload() {
+  document.getElementById('avatar-upload-input').click();
+}
+
+function triggerCoverUpload() {
+  document.getElementById('cover-upload-input').click();
+}
+
+function handleAvatarUpload(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  readImageFile(file, (dataUrl) => {
+    if (!currentUser) return;
+    editAvatarImage = dataUrl;
+    currentUser.avatarImage = dataUrl;
+    renderAvatarNode(document.getElementById('profile-avatar'), currentUser);
+    renderAvatarNode(document.getElementById('menu-avatar'), currentUser);
+    renderAvatarNode(document.getElementById('edit-av-preview'), { avatar: editAvatar || currentUser.avatar, avatarImage: editAvatarImage });
+    saveUser(currentUser);
+    showToast(currentLang === 'ar' ? '🖼️ تم تجهيز صورتك الشخصية' : '🖼️ Your profile image is ready');
+  });
+  event.target.value = '';
+}
+
+function handleCoverUpload(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  readImageFile(file, (dataUrl) => {
+    if (!currentUser) return;
+    currentUser.coverImage = dataUrl;
+    applyCoverImage(document.getElementById('profile-cover'), currentUser.coverImage);
+    saveUser(currentUser);
+    showToast(currentLang === 'ar' ? '🌌 تم تحديث الغلاف' : '🌌 Cover updated');
+  });
+  event.target.value = '';
+}
+
+function readImageFile(file, onLoad) {
+  if (!file.type.startsWith('image/')) {
+    showToast(currentLang === 'ar' ? 'اختر صورة صحيحة' : 'Choose a valid image');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = () => onLoad(reader.result);
+  reader.readAsDataURL(file);
 }
 
 // ---- Load or setup on boot ----
@@ -272,9 +358,17 @@ function showMenu() {
   closeModals();
   if (currentUser && !currentUser.isGuest) saveUser(currentUser);
   document.getElementById('menu-username').textContent = currentUser?.username || 'لاعب';
-  document.getElementById('menu-avatar').textContent = currentUser?.avatar || '🎮';
+  renderAvatarNode(document.getElementById('menu-avatar'), currentUser);
   document.getElementById('menu-score').textContent = currentUser?.highScore || 0;
   showScreen('menu-screen');
+}
+
+function syncDynamicLocalizedUI() {
+  if (gameState.levelConfig) applyLevelTheme(gameState.level);
+  if (document.getElementById('memory-levels-grid')) renderMemoryLevels();
+}
+function showGamesHub() {
+  showScreen('games-screen');
 }
 function showLevelSelect() {
   renderLevels();
@@ -287,6 +381,10 @@ function showProfile() {
 function showLeaderboard() {
   renderLeaderboard();
   showScreen('leaderboard-screen');
+}
+function showMemoryLevels() {
+  renderMemoryLevels();
+  showScreen('memory-level-screen');
 }
 
 // ===== LEVELS =====
@@ -305,9 +403,11 @@ function renderLevels() {
     const card = document.createElement('div');
     card.className = `level-card${!isUnlocked ? ' locked' : ''}${isCompleted ? ' completed' : ''}`;
     card.dataset.diff = lv.diff;
+    const theme = LEVEL_THEMES[(lv.id - 1) % LEVEL_THEMES.length];
     card.innerHTML = `
       <div class="level-num">${lv.id}</div>
       <div class="level-name">${lv.name[currentLang]}</div>
+      <div class="level-theme">${theme[currentLang]}</div>
       <div class="level-stars">${'⭐'.repeat(lvStars)}${'☆'.repeat(3 - lvStars)}</div>
       <div class="level-target">${currentLang === 'ar' ? 'الهدف:' : 'Target:'} ${lv.target}</div>
       ${!isUnlocked ? '<div style="font-size:20px;margin-top:4px">🔒</div>' : ''}
@@ -321,6 +421,7 @@ function renderLevels() {
 function startGame(levelId) {
   const lv = LEVELS.find(l => l.id === levelId);
   if (!lv) return;
+  applyLevelTheme(levelId);
 
   gameState = {
     board: Array(BOARD_SIZE).fill(null).map(() => Array(BOARD_SIZE).fill(null)),
@@ -343,9 +444,20 @@ function startGame(levelId) {
 
   document.getElementById('curr-level').textContent = levelId;
   document.getElementById('target-score').textContent = lv.target;
+  updateLevelProgress();
 
   showScreen('game-screen');
   playSound('start');
+}
+
+function applyLevelTheme(levelId) {
+  const theme = LEVEL_THEMES[(levelId - 1) % LEVEL_THEMES.length];
+  const gameScreen = document.getElementById('game-screen');
+  gameScreen.style.setProperty('--level-primary', theme.colors[0]);
+  gameScreen.style.setProperty('--level-secondary', theme.colors[1]);
+  gameScreen.style.setProperty('--level-accent', theme.colors[2]);
+  document.getElementById('level-theme-name').textContent = theme[currentLang];
+  document.getElementById('level-theme-chip').textContent = theme.chip;
 }
 
 function prefillBoard(count) {
@@ -610,6 +722,7 @@ function showScoreFloat(score, lines) {
 
 function updateScoreDisplay() {
   document.getElementById('curr-score').textContent = gameState.score;
+  updateLevelProgress();
   // Auto-save live score progress
   if (currentUser) {
     if (gameState.score > (currentUser.highScore || 0)) {
@@ -617,6 +730,14 @@ function updateScoreDisplay() {
     }
     saveUser(currentUser);
   }
+}
+
+function updateLevelProgress() {
+  if (!gameState.levelConfig) return;
+  const target = gameState.levelConfig.target || 1;
+  const progress = Math.max(0, Math.min(100, Math.round((gameState.score / target) * 100)));
+  document.getElementById('level-progress-fill').style.width = `${progress}%`;
+  document.getElementById('level-progress-text').textContent = `${progress}%`;
 }
 
 // ===== WIN / LOSE CHECK =====
@@ -701,7 +822,11 @@ function winLevel() {
   if (gameState.combo >= 3) badges.innerHTML += `<span class="win-badge">🔥 Combo x${gameState.combo}</span>`;
   if (timeSecs < 60) badges.innerHTML += `<span class="win-badge">⚡ ${currentLang === 'ar' ? 'سريع' : 'Speed'}</span>`;
 
-  document.getElementById('win-modal').classList.remove('hidden');
+  const modal = document.getElementById('win-modal');
+  const nextBtn = modal.querySelector('.btn-play');
+  nextBtn.onclick = () => nextLevel();
+  
+  modal.classList.remove('hidden');
 }
 
 function gameOver() {
@@ -743,6 +868,228 @@ function closeModals() {
   gameState.gamePaused = false;
 }
 
+// ===== MEMORY GAME =====
+const MEMORY_SYMBOLS = [
+  '🌙', '⭐', '☄️', '🪐', '🌈', '🎧', '🚀', '💎',
+  '🦁', '🐉', '🦊', '🤖', '👾', '🐺', '🦅', '🦄',
+  '🔥', '❄️', '⚡', '🍀', '🍎', '🍓', '🏀', '🎮', '🧿', '💠'
+];
+
+function renderMemoryLevels() {
+  const grid = document.getElementById('memory-levels-grid');
+  grid.innerHTML = '';
+  const unlocked = currentUser?.memoryUnlockedLevels || [1];
+  
+  MEMORY_LEVELS.forEach(level => {
+    const isUnlocked = unlocked.includes(level.id);
+    const card = document.createElement('div');
+    card.className = `level-card ${!isUnlocked ? 'locked' : ''}`;
+    card.dataset.diff = level.diff;
+    card.innerHTML = `
+      <div class="level-num">${level.id}</div>
+      <div class="level-name">${level.name[currentLang]}</div>
+      <div class="level-stars">${'🃏'.repeat(Math.min(level.pairs, 3))}</div>
+      <div class="level-target">${currentLang === 'ar' ? 'الأزواج:' : 'Pairs:'} ${level.pairs}</div>
+      ${!isUnlocked ? '<div style="font-size:24px; margin-top:8px;">🔒</div>' : ''}
+    `;
+    if (isUnlocked) {
+      card.onclick = () => {
+        startMemoryGame(level.id);
+        showScreen('memory-screen');
+      };
+    }
+    grid.appendChild(card);
+  });
+}
+
+function startMemoryGame(levelId = 2) {
+  const cfg = MEMORY_LEVELS.find(level => level.id === levelId) || MEMORY_LEVELS[1];
+  const symbols = MEMORY_SYMBOLS.slice(0, cfg.pairs);
+  const cards = [...symbols, ...symbols]
+    .map((symbol, index) => ({
+      id: `${symbol}-${index}-${Math.random().toString(36).slice(2, 7)}`,
+      symbol,
+      matched: false
+    }))
+    .sort(() => Math.random() - 0.5);
+
+  memoryState = {
+    cards,
+    flipped: cards.map(c => c.id), // Flip all initially
+    matchedPairs: 0,
+    moves: 0,
+    locked: true, // Lock board during preview
+    level: cfg.id,
+    pairCount: cfg.pairs,
+    cols: cfg.cols
+  };
+
+  renderMemoryStats();
+  renderMemoryBoard();
+
+  if (window.memoryTimerInterval) clearInterval(window.memoryTimerInterval);
+  if (window.previewInterval) clearInterval(window.previewInterval);
+
+  let previewTime = 3;
+  document.getElementById('memory-time').textContent = `00:0${previewTime}`;
+
+  window.previewInterval = setInterval(() => {
+    previewTime -= 1;
+    if (previewTime > 0) {
+      document.getElementById('memory-time').textContent = `00:0${previewTime}`;
+    } else {
+      clearInterval(window.previewInterval);
+      memoryState.flipped = [];
+      memoryState.locked = false;
+      renderMemoryBoard();
+      
+      window.memoryTimeElapsed = 0;
+      document.getElementById('memory-time').textContent = `00:00`;
+      
+      window.memoryTimerInterval = setInterval(() => {
+        window.memoryTimeElapsed += 1;
+        let mins = Math.floor(window.memoryTimeElapsed / 60).toString().padStart(2, '0');
+        let secs = (window.memoryTimeElapsed % 60).toString().padStart(2, '0');
+        const timeEl = document.getElementById('memory-time');
+        if(timeEl) timeEl.textContent = `${mins}:${secs}`;
+      }, 1000);
+    }
+  }, 1000);
+}
+
+function restartMemoryGame() {
+  startMemoryGame(memoryState.level || 2);
+  playSound('start');
+}
+
+function renderMemoryStats() {
+  const best = currentUser?.memoryBestMoves;
+  document.getElementById('memory-moves').textContent = memoryState.moves;
+  document.getElementById('memory-pairs').textContent = `${memoryState.matchedPairs}/${memoryState.pairCount}`;
+  document.getElementById('memory-best').textContent = best ? best : '--';
+}
+
+function renderMemoryBoard() {
+  const board = document.getElementById('memory-board');
+  if (!board) return;
+  board.innerHTML = '';
+  board.style.gridTemplateColumns = `repeat(${memoryState.cols || 4}, minmax(0, 1fr))`;
+
+  memoryState.cards.forEach(card => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = `memory-card${memoryState.flipped.includes(card.id) ? ' flipped' : ''}${card.matched ? ' matched' : ''}`;
+    btn.onclick = () => flipMemoryCard(card.id);
+    btn.innerHTML = `
+      <div class="memory-card-inner">
+        <div class="memory-card-face memory-card-front"></div>
+        <div class="memory-card-face memory-card-back">${card.symbol}</div>
+      </div>
+    `;
+    board.appendChild(btn);
+  });
+}
+
+function flipMemoryCard(cardId) {
+  if (memoryState.locked) return;
+  if (memoryState.flipped.includes(cardId)) return;
+
+  const card = memoryState.cards.find(item => item.id === cardId);
+  if (!card || card.matched) return;
+
+  memoryState.flipped.push(cardId);
+  renderMemoryBoard();
+  playSound('click');
+
+  if (memoryState.flipped.length < 2) return;
+
+  memoryState.moves += 1;
+  memoryState.locked = true;
+  renderMemoryStats();
+
+  const [firstId, secondId] = memoryState.flipped;
+  const first = memoryState.cards.find(item => item.id === firstId);
+  const second = memoryState.cards.find(item => item.id === secondId);
+
+  if (first && second && first.symbol === second.symbol) {
+    first.matched = true;
+    second.matched = true;
+    memoryState.matchedPairs += 1;
+    memoryState.flipped = [];
+    memoryState.locked = false;
+    renderMemoryBoard();
+    renderMemoryStats();
+    playSound('clear');
+
+    if (memoryState.matchedPairs === memoryState.pairCount) {
+      finishMemoryGame();
+    }
+    return;
+  }
+
+  setTimeout(() => {
+    memoryState.flipped = [];
+    memoryState.locked = false;
+    renderMemoryBoard();
+  }, 700);
+}
+
+function finishMemoryGame() {
+  if (window.memoryTimerInterval) clearInterval(window.memoryTimerInterval);
+  
+  const currentLvlId = memoryState.level;
+  const cfg = MEMORY_LEVELS.find(l => l.id === currentLvlId);
+  const moves = memoryState.moves;
+  const minPossible = cfg.pairs; // Perfect: each pair is matched in 1 try (2 flips). Note: logic-wise min moves=pairs.
+  
+  // Clear any existing timer
+  if (window.memoryTimerInterval) clearInterval(window.memoryTimerInterval);
+
+  // Star calculation
+  let stars = 1;
+  if (moves <= minPossible * 1.5) stars = 3;
+  else if (moves <= minPossible * 2.2) stars = 2;
+
+  if (currentUser) {
+    currentUser.totalGames = (currentUser.totalGames || 0) + 1;
+    
+    // Unlock next level
+    if (!currentUser.memoryUnlockedLevels) currentUser.memoryUnlockedLevels = [1];
+    const nextLvlId = currentLvlId + 1;
+    if (nextLvlId <= MEMORY_LEVELS.length && !currentUser.memoryUnlockedLevels.includes(nextLvlId)) {
+      currentUser.memoryUnlockedLevels.push(nextLvlId);
+    }
+    
+    // Update Best
+    if (!currentUser.memoryBestMoves || moves < currentUser.memoryBestMoves) {
+      currentUser.memoryBestMoves = moves;
+    }
+    saveUser(currentUser);
+  }
+
+  // Show Modal
+  const modal = document.getElementById('win-modal');
+  document.getElementById('win-stars').textContent = '⭐'.repeat(stars) + '☆'.repeat(3 - stars);
+  document.getElementById('win-score-text').textContent = (currentLang === 'ar' ? `أنهيت اللعبة في ${moves} حركة!` : `Finished in ${moves} moves!`);
+  
+  // Customize Next Button for Memory
+  const nextBtn = modal.querySelector('.btn-play');
+  nextBtn.onclick = () => nextMemoryLevel();
+  
+  modal.classList.remove('hidden');
+  playSound('win');
+}
+
+function nextMemoryLevel() {
+  closeModals();
+  const nextId = (memoryState.level || 0) + 1;
+  if (nextId <= MEMORY_LEVELS.length) {
+    startMemoryGame(nextId);
+  } else {
+    showGamesHub();
+  }
+}
+
 function shakeBoard() {
   const board = document.getElementById('game-board');
   board.style.animation = 'none';
@@ -762,7 +1109,8 @@ document.head.appendChild(shakeStyle);
 function renderProfile() {
   if (!currentUser) return;
   document.getElementById('profile-name').textContent = currentUser.username;
-  document.getElementById('profile-avatar').textContent = currentUser.avatar || '🎮';
+  renderAvatarNode(document.getElementById('profile-avatar'), currentUser);
+  applyCoverImage(document.getElementById('profile-cover'), currentUser.coverImage);
   document.getElementById('stat-wins').textContent = currentUser.totalWins || 0;
   document.getElementById('stat-score').textContent = currentUser.highScore || 0;
   document.getElementById('stat-games').textContent = currentUser.totalGames || 0;
@@ -804,10 +1152,33 @@ function renderProfile() {
 function changeAvatar(emoji) {
   if (!currentUser) return;
   currentUser.avatar = emoji;
-  document.getElementById('profile-avatar').textContent = emoji;
-  document.getElementById('menu-avatar').textContent = emoji;
+  currentUser.avatarImage = '';
+  renderAvatarNode(document.getElementById('profile-avatar'), currentUser);
+  renderAvatarNode(document.getElementById('menu-avatar'), currentUser);
   saveUser(currentUser);
   playSound('click');
+}
+
+function renderAvatarNode(node, userLike) {
+  if (!node) return;
+  const avatarImage = userLike?.avatarImage;
+  const avatar = userLike?.avatar || '🎮';
+  if (avatarImage) {
+    node.innerHTML = `<img src="${avatarImage}" alt="avatar" class="avatar-img">`;
+  } else {
+    node.textContent = avatar;
+  }
+}
+
+function applyCoverImage(node, image) {
+  if (!node) return;
+  if (image) {
+    node.style.backgroundImage = `linear-gradient(135deg, rgba(7,17,43,0.3), rgba(42,14,65,0.45)), url("${image}")`;
+    node.classList.add('has-image');
+  } else {
+    node.style.backgroundImage = '';
+    node.classList.remove('has-image');
+  }
 }
 
 // ===== LEADERBOARD =====
@@ -869,28 +1240,28 @@ function showToast(msg) {
 
 const TRACKS = [
   {
-    file: 'WhatsApp Audio 2026-03-29 at 12.34.56 PM.mpeg',
+    file: 'lemonmusiclab-lofi-lofi-music-499264.mp3',
     name: 'Lofi Vibes',
     artist: 'Lemon Music Lab',
     art: '🍋',
     accent: 'var(--c2)'
   },
   {
-    file: 'WhatsApp Audio 2026-03-29 at 12.34.56 PM (1).mpeg',
+    file: 'freemusicforvideo-lofi-chill-music-495628.mp3',
     name: 'Chill Beats',
     artist: 'Free Music For Video',
     art: '🌙',
     accent: 'var(--c7)'
   },
   {
-    file: 'WhatsApp Audio 2026-03-29 at 12.34.57 PM.mpeg',
+    file: 'fassounds-good-night-lofi-cozy-chill-music-160166.mp3',
     name: 'Good Night',
     artist: 'Fassounds',
     art: '✨',
     accent: 'var(--c6)'
   },
   {
-    file: 'WhatsApp Audio 2026-03-29 at 12.34.57 PM (1).mpeg',
+    file: 'the_mountain-lofi-lofi-music-496553.mp3',
     name: 'The Mountain',
     artist: 'The Mountain',
     art: '🏔️',
@@ -978,15 +1349,12 @@ function updateActiveTrackUI() {
   document.querySelectorAll('.quick-track-btn').forEach((el, i) => {
     el.classList.toggle('active', i === currentTrackIdx);
   });
-
 }
 
 function loadTrack(idx, autoplay = true) {
   if (!audioEl) initMusicPlayer();
-  if (TRACKS.length === 0) return;
-  const safeIdx = ((idx % TRACKS.length) + TRACKS.length) % TRACKS.length;
-  currentTrackIdx = safeIdx;
-  const tr = TRACKS[safeIdx];
+  currentTrackIdx = idx;
+  const tr = TRACKS[idx];
   audioEl.src = tr.file;
   audioEl.load();
 
@@ -999,6 +1367,7 @@ function loadTrack(idx, autoplay = true) {
   document.getElementById('time-curr').textContent = '0:00';
   document.getElementById('time-total').textContent = '--:--';
   updateActiveTrackUI();
+
   if (autoplay) {
     unlockAmbientAudio();
     audioEl.play().catch(() => {});
@@ -1070,6 +1439,7 @@ function toggleMusicPanel() {
   panel.classList.toggle('hidden', !musicPanelOpen);
   if (musicPanelOpen) initMusicPlayer();
 }
+
 // ===== SOUND EFFECTS (kept for game feedback) =====
 function initAudio() {
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1168,4 +1538,525 @@ window.onload = () => {
   }
 };
 
+// ===== NEON STRIKE =====
 
+let raidCanvas, raidCtx;
+let raidAnimFrame;
+let rState = {
+  running: false, score: 0, fuel: 100, // fuel is now "energy"
+  speed: 5, offsetY: 0, combo: 0, comboTimer: 0,
+  player: { x: 50, y: 80, w: 30, h: 40, vx: 0, dash: 0, shield: 0, slow: 0 },
+  skills: { dash: { cd: 0, max: 200 }, shield: { cd: 0, max: 500 }, slow: { cd: 0, max: 400 } },
+  projs: [], enemies: [], particles: [], stars: [],
+  lastEnemy: 0, bossActive: false, boss: null
+};
+
+let playerShipType = { type: 'emoji', value: '🚀', frame: 0 };
+let playerShipColor = '#00ffff';
+let shipSpriteSheet = new Image();
+shipSpriteSheet.onload = () => { console.log('Ships Sprite Loaded Successfully'); };
+shipSpriteSheet.onerror = () => { console.error('Error Loading Ships Sprite'); };
+shipSpriteSheet.src = 'assets/neon_ships.png?v=' + Date.now();
+
+function triggerCyberStart() {
+  playSound('start');
+  initDesertRaidGame();
+}
+
+function openCyberCharModal() { document.getElementById('cyber-char-modal').classList.remove('hidden'); }
+function closeCyberCharModal() { document.getElementById('cyber-char-modal').classList.add('hidden'); }
+function selectCyberShip(el, value, type = 'emoji', frame = 0) {
+  document.querySelectorAll('.cyber-ship-av').forEach(n => n.classList.remove('selected'));
+  el.classList.add('selected');
+  playerShipType = { type, value, frame };
+  playSound('click');
+}
+function changeCyberColor(color) { playerShipColor = color; }
+function openCyberSettingsModal() { document.getElementById('cyber-settings-modal').classList.remove('hidden'); }
+function closeCyberSettingsModal() { document.getElementById('cyber-settings-modal').classList.add('hidden'); }
+
+function showDesertRaid() { // Reused function name for backwards compatibility
+  showScreen('raid-screen');
+  document.getElementById('raid-overlay').style.display = 'flex';
+  
+  const bestEl = document.getElementById('cyber-high-score-val');
+  if (bestEl) bestEl.textContent = currentUser && currentUser.raidBest ? currentUser.raidBest : 0;
+  
+  if (!raidCanvas) raidCanvas = document.getElementById('raid-canvas');
+  if (raidCanvas) {
+    const wrap = document.querySelector('.raid-game-wrap');
+    if(wrap) { raidCanvas.width = wrap.clientWidth; raidCanvas.height = wrap.clientHeight; }
+  }
+}
+
+function initDesertRaidGame() {
+  document.getElementById('raid-overlay').style.display = 'none';
+  raidCanvas = document.getElementById('raid-canvas');
+  raidCtx = raidCanvas.getContext('2d', { alpha: false });
+  const wrap = document.querySelector('.raid-game-wrap');
+  raidCanvas.width = wrap.clientWidth; raidCanvas.height = wrap.clientHeight;
+  
+  rState = {
+    running: true, score: 0, energy: 100, speed: 6, offsetY: 0, combo: 0, comboTimer: 0, lives: 3, padWasMoving: false,
+    player: { x: raidCanvas.width / 2 - 15, y: raidCanvas.height - 80, w: 30, h: 40, vx: 0, dash: 0, shield: 0, slow: 0 },
+    skills: { dash: { cd: 0, max: 200 }, shield: { cd: 0, max: 600 }, slow: { cd: 0, max: 500 } },
+    projs: [], enemies: [], particles: [], stars: [],
+    lastEnemy: 0, bossActive: false, boss: null, canyonWidth: raidCanvas.width * 0.95
+  };
+  
+  for(let i=0; i<50; i++) rState.stars.push({x: Math.random()*raidCanvas.width, y: Math.random()*raidCanvas.height, s: Math.random()*2+1});
+  
+  if (window.raidFuelInterval) clearInterval(window.raidFuelInterval);
+  window.raidFuelInterval = setInterval(() => {
+    if (rState.running) {
+      rState.energy -= (rState.player.slow > 0 ? 0.3 : 1);
+      if(rState.skills.dash.cd > 0) rState.skills.dash.cd -= 10;
+      if(rState.skills.shield.cd > 0) rState.skills.shield.cd -= 10;
+      if(rState.skills.slow.cd > 0) rState.skills.slow.cd -= 10;
+      
+      updateRaidUI();
+      if (rState.energy <= 0) {
+        rState.lives--;
+        if (rState.lives <= 0) raidGameOver();
+        else {
+          rState.energy = 50; 
+          rState.player.shield = 100;
+          playSound('error');
+        }
+      }
+    }
+  }, 100);
+  
+  raidLoop();
+}
+
+function updateRaidUI() {
+  document.getElementById('raid-score').textContent = rState.score;
+  const f = Math.max(0, Math.min(100, rState.energy));
+  document.getElementById('raid-fuel-fill').style.width = f + '%';
+  const livesEl = document.getElementById('raid-lives');
+  if (livesEl) livesEl.textContent = '❤️'.repeat(Math.max(0, rState.lives));
+  
+  const updateSkillBtn = (id, skill) => {
+    const btn = document.getElementById(id);
+    if(btn) {
+      if(skill.cd > 0) {
+        btn.classList.add('cooldown');
+        btn.style.background = `linear-gradient(90deg, rgba(255,255,0,0.1) ${(1 - skill.cd/skill.max)*100}%, rgba(0,0,0,0.8) 0%)`;
+      } else {
+        btn.classList.remove('cooldown');
+        btn.style.background = 'rgba(255,255,0,0.1)';
+      }
+    }
+  };
+  updateSkillBtn('btn-dash', rState.skills.dash);
+  updateSkillBtn('btn-shield', rState.skills.shield);
+  updateSkillBtn('btn-slow', rState.skills.slow);
+}
+
+function raidMove(dir) { if (rState.running) rState.player.vx = dir * 8; }
+function raidStop() { if (rState.running) rState.player.vx = 0; }
+
+function raidUseDash() {
+  if(!rState.running || rState.skills.dash.cd > 0) return;
+  rState.player.dash = 15;
+  rState.skills.dash.cd = rState.skills.dash.max;
+  playSound('start');
+  createExplosion(rState.player.x+15, rState.player.y+20, '#00ffff', 10);
+}
+function raidUseShield() {
+  if(!rState.running || rState.skills.shield.cd > 0) return;
+  rState.player.shield = 100;
+  rState.skills.shield.cd = rState.skills.shield.max;
+  playSound('win');
+}
+function raidUseSlow() {
+  if(!rState.running || rState.skills.slow.cd > 0) return;
+  rState.player.slow = 100;
+  rState.skills.slow.cd = rState.skills.slow.max;
+  playSound('achievement');
+}
+
+window.addEventListener('keydown', (e) => {
+  if (!rState.running) return;
+  if (['ArrowLeft','a','A'].includes(e.key)) raidMove(-1);
+  if (['ArrowRight','d','D'].includes(e.key)) raidMove(1);
+  if ([' ','ArrowUp','w','W'].includes(e.key)) raidShoot();
+  if (e.key === 'Shift') raidUseDash();
+  if (e.key === '1') raidUseShield();
+  if (e.key === '2') raidUseSlow();
+});
+window.addEventListener('keyup', (e) => {
+  if (!rState.running) return;
+  if (['ArrowLeft','a','A','ArrowRight','d','D'].includes(e.key)) raidStop();
+});
+
+let lastShootTime = 0;
+function handleGamepad() {
+  const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+  let gp = null;
+  for (let i = 0; i < gamepads.length; i++) {
+    if (gamepads[i] && gamepads[i].connected) { gp = gamepads[i]; break; }
+  }
+  if (!gp || !rState.running) return;
+
+  let padMoved = false;
+  if (gp.axes[0] < -0.3 || (gp.buttons[14] && gp.buttons[14].pressed)) {
+    raidMove(-1); padMoved = true;
+  } else if (gp.axes[0] > 0.3 || (gp.buttons[15] && gp.buttons[15].pressed)) {
+    raidMove(1); padMoved = true;
+  }
+  
+  if (!padMoved && rState.padWasMoving) {
+    raidStop();
+    rState.padWasMoving = false;
+  } else if (padMoved) {
+    rState.padWasMoving = true;
+  }
+
+  const now = Date.now();
+  if ((gp.buttons[0] && gp.buttons[0].pressed) || (gp.buttons[7] && gp.buttons[7].pressed)) {
+    if (now - lastShootTime > 150) { raidShoot(); lastShootTime = now; }
+  }
+
+  if (gp.buttons[2] && gp.buttons[2].pressed) raidUseDash(); 
+  if (gp.buttons[1] && gp.buttons[1].pressed) raidUseShield(); 
+  if (gp.buttons[3] && gp.buttons[3].pressed) raidUseSlow(); 
+}
+
+function raidShoot() {
+  if (!rState.running) return;
+  rState.projs.push({ x: rState.player.x + rState.player.w / 2 - 2, y: rState.player.y, w: 4, h: 16, vy: -15, c: '#ff00ff' });
+  if (rState.player.dash > 0) { // Spread shot if dashing
+    rState.projs.push({ x: rState.player.x, y: rState.player.y, w: 4, h: 16, vx: -3, vy: -15, c: '#00ffff' });
+    rState.projs.push({ x: rState.player.x + rState.player.w, y: rState.player.y, w: 4, h: 16, vx: 3, vy: -15, c: '#00ffff' });
+  }
+  playSound('click');
+}
+
+function createExplosion(x, y, color, count=15) {
+  for(let i=0; i<count; i++) {
+    rState.particles.push({
+      x, y, vx: (Math.random()-0.5)*10, vy: (Math.random()-0.5)*10,
+      life: 1, color, size: Math.random()*4+2
+    });
+  }
+}
+
+function raidLoop() {
+  if (!rState.running) return;
+  updateRaid();
+  drawRaid();
+  handleGamepad();
+  raidAnimFrame = requestAnimationFrame(raidLoop);
+}
+
+function updateRaid() {
+  let effSpeed = rState.player.slow > 0 ? rState.speed * 0.4 : rState.speed;
+  rState.offsetY += effSpeed;
+  
+  if (rState.comboTimer > 0) rState.comboTimer--;
+  else rState.combo = 0;
+  
+  if(rState.player.dash > 0) rState.player.dash--;
+  if(rState.player.shield > 0) rState.player.shield--;
+  if(rState.player.slow > 0) rState.player.slow--;
+  
+  let pSpeed = rState.player.vx;
+  if(rState.player.dash > 0) pSpeed *= 2.5;
+  rState.player.x += pSpeed;
+  
+  const margin = (raidCanvas.width - rState.canyonWidth) / 2;
+  if (rState.player.x < margin) rState.player.x = margin;
+  if (rState.player.x + rState.player.w > raidCanvas.width - margin) rState.player.x = raidCanvas.width - margin - rState.player.w;
+  
+  rState.projs.forEach(p => { p.y += p.vy; if(p.vx) p.x += p.vx; });
+  rState.projs = rState.projs.filter(p => p.y > 0 && p.x > 0 && p.x < raidCanvas.width);
+  
+  rState.particles.forEach(p => { p.x += p.vx; p.y += p.vy; p.life -= 0.05; p.size *= 0.9; });
+  rState.particles = rState.particles.filter(p => p.life > 0);
+  
+  rState.stars.forEach(s => { s.y += effSpeed * s.s * 0.5; if(s.y > raidCanvas.height) { s.y = 0; s.x = Math.random()*raidCanvas.width; }});
+  
+  // Scoring & Boss spawn
+  rState.score += (rState.player.slow > 0 ? 0.5 : 1);
+  if (rState.score > 0 && Math.floor(rState.score) % 2000 === 0 && !rState.bossActive && rState.score < 2005) {
+    rState.bossActive = true;
+    rState.boss = { x: raidCanvas.width/2 - 60, y: -100, w: 120, h: 80, hp: 50, maxHp: 50, vx: 3, type: 'boss' };
+    rState.enemies.push(rState.boss);
+    rState.speed += 1;
+    playSound('error');
+  }
+  
+  if (!rState.bossActive) {
+    rState.lastEnemy += (rState.player.slow > 0 ? 0.4 : 1);
+    if (rState.lastEnemy > Math.max(15, 50 - rState.speed * 1.5)) {
+      rState.lastEnemy = 0;
+      const isFuel = Math.random() < 0.15;
+      const isSeeker = Math.random() < 0.1;
+      const w = isFuel ? 25 : 40; const h = isFuel ? 35 : 30;
+      const x = margin + Math.random() * (rState.canyonWidth - w);
+      rState.enemies.push({ x, y: -h, w, h, type: isFuel ? 'fuel' : (isSeeker ? 'seeker' : 'enemy'), hp: isFuel ? 1 : (isSeeker?2:3) });
+    }
+  }
+  
+  rState.enemies.forEach(e => {
+    if(e.type === 'boss') {
+      if(e.y < 50) e.y += 2;
+      e.x += e.vx;
+      if (e.x < margin || e.x + e.w > raidCanvas.width - margin) e.vx *= -1;
+      if (Math.random() < 0.05 && rState.player.slow <= 0) {
+         rState.enemies.push({x: e.x+e.w/2-10, y: e.y+e.h, w: 20, h: 20, type:'laser', hp:1, vy: 8});
+      }
+    } else if (e.type === 'seeker') {
+      e.y += effSpeed * 1.2;
+      e.x += (rState.player.x - e.x) * 0.02;
+    } else if (e.type === 'laser') {
+      e.y += e.vy * (rState.player.slow > 0 ? 0.3 : 1);
+    } else {
+      e.y += effSpeed * 0.9;
+      if (e.type === 'enemy') {
+        if (e.time === undefined) e.time = Math.random() * 100;
+        if (e.x0 === undefined) e.x0 = e.x;
+        
+        e.time += 0.05;
+        e.x = e.x0 + Math.sin(e.time) * 50;
+        const margin = (raidCanvas.width - rState.canyonWidth) / 2;
+        if (e.x < margin) e.x = margin;
+        if (e.x + e.w > raidCanvas.width - margin) e.x = raidCanvas.width - margin - e.w;
+
+        if (Math.random() < 0.03 && rState.player.slow <= 0) {
+          rState.enemies.push({x: e.x+e.w/2-3, y: e.y+e.h, w: 6, h: 16, type:'laser', hp:1, vy: 8});
+        }
+      }
+    }
+  });
+  
+  rState.enemies = rState.enemies.filter(e => e.y < raidCanvas.height + 50);
+  
+  for (let i = rState.enemies.length - 1; i >= 0; i--) {
+    let e = rState.enemies[i];
+    
+    // Player collision
+    if (rectIntersect(rState.player, {x:e.x, y:e.y, width:e.w, height:e.h})) {
+      if (e.type === 'fuel') {
+        rState.energy = Math.min(100, rState.energy + 35);
+        rState.score += 100;
+        createExplosion(e.x+e.w/2, e.y+e.h/2, '#00ffff', 10);
+        rState.enemies.splice(i, 1);
+        playSound('clear');
+        continue;
+      } else {
+        if (rState.player.dash > 0 || rState.player.shield > 0) {
+          e.hp -= 5;
+          if(e.hp <= 0) {
+            createExplosion(e.x+e.w/2, e.y+e.h/2, '#ff00ff', 20);
+            rState.enemies.splice(i, 1);
+            playSound('place');
+          }
+          if(rState.player.shield === 0) rState.player.dash = 0; // stop dash on impact
+        } else {
+          createExplosion(rState.player.x+15, rState.player.y+20, '#ff4757', 50);
+          rState.lives--;
+          if (rState.lives <= 0) {
+            raidGameOver();
+            return;
+          } else {
+            rState.player.shield = 100;
+            rState.enemies.splice(i, 1);
+            playSound('error');
+          }
+        }
+      }
+    }
+    
+    // Projectiles collision
+    for (let j = rState.projs.length - 1; j >= 0; j--) {
+      let p = rState.projs[j];
+      if (rectIntersect({x:p.x,y:p.y,width:p.w,height:p.h}, {x:e.x, y:e.y, width:e.w, height:e.h})) {
+        rState.projs.splice(j, 1);
+        if (e.type !== 'fuel') {
+          createExplosion(p.x, p.y, p.c, 5);
+          e.hp--;
+           if (e.hp <= 0) {
+            rState.combo++; rState.comboTimer = 100;
+            let mult = Math.min(5, 1 + Math.floor(rState.combo/3));
+            rState.score += (e.type==='boss'?2000:100) * mult;
+            createExplosion(e.x+e.w/2, e.y+e.h/2, e.type==='boss'?'#ffff00':'#ff00ff', e.type==='boss'?50:20);
+            if(e.type === 'boss') rState.bossActive = false;
+            rState.enemies.splice(i, 1);
+            playSound(e.type==='boss'?'win':'place');
+          }
+        }
+        break;
+      }
+    }
+  }
+}
+
+function drawRaid() {
+  raidCtx.fillStyle = '#050510'; 
+  raidCtx.fillRect(0, 0, raidCanvas.width, raidCanvas.height);
+  
+  // Stars
+  raidCtx.fillStyle = '#ffffff';
+  rState.stars.forEach(s => { raidCtx.globalAlpha = s.s/3; raidCtx.fillRect(s.x, s.y, s.s, s.s); });
+  raidCtx.globalAlpha = 1;
+
+  // Neon Grid Back
+  raidCtx.strokeStyle = 'rgba(0, 255, 255, 0.15)';
+  raidCtx.lineWidth = 1;
+  raidCtx.beginPath();
+  let effSpeed = rState.player.slow > 0 ? rState.speed * 0.4 : rState.speed;
+  const gridSize = 60;
+  for (let i = 0; i < raidCanvas.width/gridSize; i++) {
+    raidCtx.moveTo(i*gridSize, 0); raidCtx.lineTo(i*gridSize, raidCanvas.height);
+  }
+  for (let i = -2; i < raidCanvas.height/gridSize + 2; i++) {
+    const y = (i*gridSize + rState.offsetY % gridSize);
+    raidCtx.moveTo(0, y); raidCtx.lineTo(raidCanvas.width, y);
+  }
+  raidCtx.stroke();
+  
+  const margin = (raidCanvas.width - rState.canyonWidth) / 2;
+  
+  // Side Walls
+  raidCtx.fillStyle = 'rgba(255, 0, 255, 0.05)';
+  raidCtx.fillRect(0, 0, margin, raidCanvas.height);
+  raidCtx.fillRect(raidCanvas.width - margin, 0, margin, raidCanvas.height);
+  raidCtx.strokeStyle = '#ff00ff';
+  raidCtx.lineWidth = 2;
+  raidCtx.shadowBlur = 15; raidCtx.shadowColor = '#ff00ff';
+  raidCtx.beginPath();
+  raidCtx.moveTo(margin, 0); raidCtx.lineTo(margin, raidCanvas.height);
+  raidCtx.moveTo(raidCanvas.width - margin, 0); raidCtx.lineTo(raidCanvas.width - margin, raidCanvas.height);
+  raidCtx.stroke();
+  raidCtx.shadowBlur = 0;
+  
+  // Player
+  raidCtx.shadowBlur = 20;
+  raidCtx.shadowColor = rState.player.dash > 0 ? '#ffffff' : (rState.player.shield > 0 ? '#ffff00' : playerShipColor);
+  raidCtx.fillStyle = raidCtx.shadowColor;
+  
+  if (playerShipType.type === 'emoji') {
+    raidCtx.beginPath();
+    raidCtx.moveTo(rState.player.x + rState.player.w/2, rState.player.y);
+    raidCtx.lineTo(rState.player.x + rState.player.w, rState.player.y + rState.player.h);
+    raidCtx.lineTo(rState.player.x, rState.player.y + rState.player.h);
+    raidCtx.fill();
+    raidCtx.shadowBlur = 0;
+    raidCtx.font = '26px Arial';
+    raidCtx.textAlign = 'center';
+    raidCtx.textBaseline = 'middle';
+    raidCtx.fillText(playerShipType.value, rState.player.x + rState.player.w/2, rState.player.y + rState.player.h/2 + 5);
+  } else if (playerShipType.type === 'image') {
+    const frameSize = shipSpriteSheet.complete ? shipSpriteSheet.naturalWidth / 4 : 128; 
+    const fx = (playerShipType.frame % 4) * frameSize;
+    const fy = Math.floor(playerShipType.frame / 4) * frameSize;
+    
+    raidCtx.save();
+    raidCtx.translate(rState.player.x + rState.player.w/2, rState.player.y + rState.player.h/2);
+    
+    // Rotate 180 degrees to face forward (up)
+    // Plus a small tilt based on horizontal velocity for extra "juice"
+    const tilt = (rState.player.vx / 10) * 0.2; 
+    raidCtx.rotate(Math.PI + tilt); 
+    
+    const oldGCO = raidCtx.globalCompositeOperation;
+    raidCtx.globalCompositeOperation = 'screen';
+    
+    // Draw centered
+    raidCtx.drawImage(shipSpriteSheet, fx, fy, frameSize, frameSize, -rState.player.w/2, -rState.player.h/2, rState.player.w, rState.player.h);
+    
+    raidCtx.globalCompositeOperation = oldGCO;
+    raidCtx.restore();
+  }
+  
+  // Shield ring
+  if(rState.player.shield > 0) {
+    raidCtx.strokeStyle = `rgba(255,255,0,${rState.player.shield/100})`;
+    raidCtx.lineWidth = 3; raidCtx.beginPath();
+    raidCtx.arc(rState.player.x+rState.player.w/2, rState.player.y+rState.player.h/2, 35, 0, Math.PI*2);
+    raidCtx.stroke();
+  }
+  if(rState.player.slow > 0) {
+    raidCtx.fillStyle = `rgba(0,255,255,${(rState.player.slow/100)*0.2})`;
+    raidCtx.fillRect(0,0,raidCanvas.width,raidCanvas.height);
+  }
+  
+  // Projectiles
+  rState.projs.forEach(p => {
+    raidCtx.shadowBlur = 10; raidCtx.shadowColor = p.c;
+    raidCtx.fillStyle = '#ffffff';
+    raidCtx.fillRect(p.x, p.y, p.w, p.h);
+  });
+  raidCtx.shadowBlur = 0;
+  
+  // Enemies
+  rState.enemies.forEach(e => {
+    if (e.type === 'fuel') {
+      raidCtx.shadowBlur = 15; raidCtx.shadowColor = '#00ffff';
+      raidCtx.fillStyle = '#0a2a2a'; raidCtx.strokeStyle = '#00ffff'; raidCtx.lineWidth = 2;
+      raidCtx.fillRect(e.x, e.y, e.w, e.h); raidCtx.strokeRect(e.x, e.y, e.w, e.h);
+      raidCtx.fillStyle = '#00ffff'; raidCtx.font = 'bold 16px Arial';
+      raidCtx.fillText('⚡', e.x + 4, e.y + e.h/2 + 6);
+    } else if (e.type === 'boss') {
+      raidCtx.shadowBlur = 20; raidCtx.shadowColor = '#ff0000';
+      raidCtx.fillStyle = '#110000'; raidCtx.strokeStyle = '#ff0000'; raidCtx.lineWidth = 3;
+      raidCtx.fillRect(e.x, e.y, e.w, e.h); raidCtx.strokeRect(e.x, e.y, e.w, e.h);
+      // Boss Eye
+      raidCtx.fillStyle = '#ff0000';
+      raidCtx.beginPath(); raidCtx.arc(e.x+e.w/2, e.y+e.h/2, 15, 0, Math.PI*2); raidCtx.fill();
+      // Boss HP
+      raidCtx.fillStyle = '#ff0000';
+      raidCtx.fillRect(e.x, e.y - 12, (e.hp/e.maxHp)*e.w, 6);
+    } else if (e.type === 'laser') {
+      raidCtx.shadowBlur = 10; raidCtx.shadowColor = '#ff0000'; raidCtx.fillStyle = '#ff4757';
+      raidCtx.fillRect(e.x, e.y, e.w, e.h);
+    } else {
+      raidCtx.shadowBlur = 15; raidCtx.shadowColor = e.type==='seeker'?'#ff00ff':'#ff4757';
+      raidCtx.fillStyle = '#1a0505'; raidCtx.strokeStyle = raidCtx.shadowColor; raidCtx.lineWidth = 2;
+      // Diamond shape for enemies
+      raidCtx.beginPath();
+      raidCtx.moveTo(e.x + e.w/2, e.y);
+      raidCtx.lineTo(e.x + e.w, e.y + e.h/2);
+      raidCtx.lineTo(e.x + e.w/2, e.y + e.h);
+      raidCtx.lineTo(e.x, e.y + e.h/2);
+      raidCtx.closePath();
+      raidCtx.fill(); raidCtx.stroke();
+    }
+  });
+  raidCtx.shadowBlur = 0;
+  
+  // Particles
+  rState.particles.forEach(p => {
+    raidCtx.fillStyle = p.color; raidCtx.globalAlpha = p.life;
+    raidCtx.beginPath(); raidCtx.arc(p.x, p.y, p.size, 0, Math.PI*2); raidCtx.fill();
+  });
+  raidCtx.globalAlpha = 1;
+  // Combo Text
+  if (rState.combo > 1) {
+    raidCtx.fillStyle = `rgba(0, 255, 255, ${rState.comboTimer/100})`;
+    raidCtx.font = 'italic 900 32px Orbitron';
+    raidCtx.fillText(`x${Math.min(5, 1+Math.floor(rState.combo/3))} COMBO!`, raidCanvas.width/2 - 80, 100);
+  }
+}
+
+function rectIntersect(r1, r2) {
+  return !(r2.x > r1.x + r1.width || r2.x + r2.width < r1.x || r2.y > r1.y + r1.height || r2.y + r2.height < r1.y);
+}
+
+function raidGameOver() {
+  rState.running = false;
+  clearInterval(window.raidFuelInterval);
+  playSound('lose');
+  if (currentUser) {
+    if (!currentUser.raidBest || rState.score > currentUser.raidBest) {
+      currentUser.raidBest = rState.score;
+      showToast(currentLang === 'ar' ? 'رقم قياسي نيون جديد!' : 'New Neon Record!');
+    }
+    saveUser(currentUser);
+  }
+  document.getElementById('raid-overlay').style.display = 'flex';
+  document.getElementById('raid-msg').textContent = (currentLang === 'ar' ? 'تحطمت! النقاط: ' : 'CRASHED! Score: ') + Math.floor(rState.score);
+}
