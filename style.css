@@ -1151,11 +1151,62 @@ button:focus-visible,
   box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05), 0 14px 24px rgba(0,0,0,0.22);
 }
 
-.memory-card-front::before {
-  content: 'âœ¦';
-  font-size: 28px;
-  color: rgba(255,255,255,0.82);
-  text-shadow: 0 0 12px rgba(255,255,255,0.2);
+.memory-star-orbit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  animation: memoryStarRotate 12s linear infinite;
+  transform-origin: center;
+}
+
+.memory-star-core {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  line-height: 1;
+  color: rgba(255,255,255,0.9);
+  text-shadow:
+    0 0 12px rgba(255,255,255,0.26),
+    0 0 20px rgba(80, 232, 255, 0.2);
+  animation:
+    memoryStarPulse 2.4s ease-in-out infinite,
+    memoryStarShimmer 3.4s ease-in-out infinite;
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+.memory-card.is-pressing .memory-star-core,
+.memory-card:active .memory-star-core {
+  transform: scale(1.22);
+  filter: brightness(1.28) saturate(1.08);
+}
+
+@keyframes memoryStarPulse {
+  0%, 100% { font-size: 28px; }
+  50% { font-size: 31px; }
+}
+
+@keyframes memoryStarShimmer {
+  0%, 100% {
+    opacity: 0.78;
+    filter: brightness(0.92);
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(1.34);
+  }
+}
+
+@keyframes memoryStarRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .memory-star-orbit,
+  .memory-star-core {
+    animation: none !important;
+  }
 }
 
 .memory-card-back {

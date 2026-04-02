@@ -1060,9 +1060,17 @@ function renderMemoryBoard() {
     btn.type = 'button';
     btn.className = `memory-card${memoryState.flipped.includes(card.id) ? ' flipped' : ''}${card.matched ? ' matched' : ''}`;
     btn.onclick = () => flipMemoryCard(card.id);
+    btn.onpointerdown = () => btn.classList.add('is-pressing');
+    btn.onpointerup = () => btn.classList.remove('is-pressing');
+    btn.onpointercancel = () => btn.classList.remove('is-pressing');
+    btn.onpointerleave = () => btn.classList.remove('is-pressing');
     btn.innerHTML = `
       <div class="memory-card-inner">
-        <div class="memory-card-face memory-card-front"></div>
+        <div class="memory-card-face memory-card-front">
+          <span class="memory-star-orbit">
+            <span class="memory-star-core">✦</span>
+          </span>
+        </div>
         <div class="memory-card-face memory-card-back">${card.symbol}</div>
       </div>
     `;
