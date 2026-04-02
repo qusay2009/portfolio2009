@@ -28,44 +28,44 @@ let memoryState = {
 
 const BOARD_SIZE = 8;
 const MEMORY_LEVELS = [
-  { id: 1, name: { ar: 'مبتدئ ✨', en: 'Beginner' }, pairs: 4, cols: 4, diff: 1 },
-  { id: 2, name: { ar: 'سهل 🌱', en: 'Easy' }, pairs: 6, cols: 4, diff: 1 },
-  { id: 3, name: { ar: 'متوسط ⚡', en: 'Medium' }, pairs: 8, cols: 4, diff: 2 },
-  { id: 4, name: { ar: 'متقدم 🔥', en: 'Advanced' }, pairs: 10, cols: 5, diff: 2 },
-  { id: 5, name: { ar: 'صعب 💎', en: 'Hard' }, pairs: 12, cols: 6, diff: 3 },
-  { id: 6, name: { ar: 'احترافي 🏆', en: 'Pro' }, pairs: 15, cols: 6, diff: 3 },
-  { id: 7, name: { ar: 'أسطوري 🐉', en: 'Legendary' }, pairs: 18, cols: 6, diff: 3 },
-  { id: 8, name: { ar: 'مستحيل 🛸', en: 'Impossible' }, pairs: 24, cols: 8, diff: 3 },
+  { id: 1, name: { ar: 'ظ…ط¨طھط¯ط¦ âœ¨', en: 'Beginner' }, pairs: 4, cols: 4, diff: 1 },
+  { id: 2, name: { ar: 'ط³ظ‡ظ„ ًںŒ±', en: 'Easy' }, pairs: 6, cols: 4, diff: 1 },
+  { id: 3, name: { ar: 'ظ…طھظˆط³ط· âڑ،', en: 'Medium' }, pairs: 8, cols: 4, diff: 2 },
+  { id: 4, name: { ar: 'ظ…طھظ‚ط¯ظ… ًں”¥', en: 'Advanced' }, pairs: 10, cols: 5, diff: 2 },
+  { id: 5, name: { ar: 'طµط¹ط¨ ًں’ژ', en: 'Hard' }, pairs: 12, cols: 6, diff: 3 },
+  { id: 6, name: { ar: 'ط§ط­طھط±ط§ظپظٹ ًںڈ†', en: 'Pro' }, pairs: 15, cols: 6, diff: 3 },
+  { id: 7, name: { ar: 'ط£ط³ط·ظˆط±ظٹ ًںگ‰', en: 'Legendary' }, pairs: 18, cols: 6, diff: 3 },
+  { id: 8, name: { ar: 'ظ…ط³طھط­ظٹظ„ ًں›¸', en: 'Impossible' }, pairs: 24, cols: 8, diff: 3 },
 ];
 const LEVEL_THEMES = [
-  { ar: 'مجرة البداية', en: 'Starter Galaxy', chip: 'Nova', colors: ['#62d5ff', '#7f5cff', '#ffcf5a'] },
-  { ar: 'شهب ذهبية', en: 'Meteor Gold', chip: 'Solar', colors: ['#ffb347', '#ff7a59', '#ffe76a'] },
-  { ar: 'ضباب زمردي', en: 'Emerald Mist', chip: 'Mist', colors: ['#47f5a0', '#00d2ff', '#8dff73'] },
-  { ar: 'نيون ليلي', en: 'Midnight Neon', chip: 'Neon', colors: ['#7b61ff', '#ff63b8', '#6ac3ff'] },
-  { ar: 'لهيب النجوم', en: 'Starfire', chip: 'Blaze', colors: ['#ff6d6d', '#ff9f43', '#ffd166'] },
-  { ar: 'بحر كوني', en: 'Cosmic Tide', chip: 'Tide', colors: ['#00d2ff', '#1e90ff', '#7a7cff'] },
-  { ar: 'أورورا أسطورية', en: 'Legend Aurora', chip: 'Aura', colors: ['#8cff6a', '#00ffa3', '#66c7ff'] },
-  { ar: 'عاصفة ليلية', en: 'Night Storm', chip: 'Storm', colors: ['#6f7bff', '#00bfff', '#d46bff'] },
-  { ar: 'جحيم الكواكب', en: 'Inferno Orbit', chip: 'Inferno', colors: ['#ff5c5c', '#ff7a00', '#ffd166'] },
-  { ar: 'تاج المجرة', en: 'Galaxy Crown', chip: 'Crown', colors: ['#ffd700', '#ff67c4', '#6ae3ff'] },
-  { ar: 'غزو الشفق', en: 'Aurora Raid', chip: 'Raid', colors: ['#66ffb3', '#7f5cff', '#ffaf45'] },
-  { ar: 'أسطورة النجم', en: 'Star Legend', chip: 'Legend', colors: ['#ffffff', '#ffe76a', '#89c8ff'] },
+  { ar: 'ظ…ط¬ط±ط© ط§ظ„ط¨ط¯ط§ظٹط©', en: 'Starter Galaxy', chip: 'Nova', colors: ['#62d5ff', '#7f5cff', '#ffcf5a'] },
+  { ar: 'ط´ظ‡ط¨ ط°ظ‡ط¨ظٹط©', en: 'Meteor Gold', chip: 'Solar', colors: ['#ffb347', '#ff7a59', '#ffe76a'] },
+  { ar: 'ط¶ط¨ط§ط¨ ط²ظ…ط±ط¯ظٹ', en: 'Emerald Mist', chip: 'Mist', colors: ['#47f5a0', '#00d2ff', '#8dff73'] },
+  { ar: 'ظ†ظٹظˆظ† ظ„ظٹظ„ظٹ', en: 'Midnight Neon', chip: 'Neon', colors: ['#7b61ff', '#ff63b8', '#6ac3ff'] },
+  { ar: 'ظ„ظ‡ظٹط¨ ط§ظ„ظ†ط¬ظˆظ…', en: 'Starfire', chip: 'Blaze', colors: ['#ff6d6d', '#ff9f43', '#ffd166'] },
+  { ar: 'ط¨ط­ط± ظƒظˆظ†ظٹ', en: 'Cosmic Tide', chip: 'Tide', colors: ['#00d2ff', '#1e90ff', '#7a7cff'] },
+  { ar: 'ط£ظˆط±ظˆط±ط§ ط£ط³ط·ظˆط±ظٹط©', en: 'Legend Aurora', chip: 'Aura', colors: ['#8cff6a', '#00ffa3', '#66c7ff'] },
+  { ar: 'ط¹ط§طµظپط© ظ„ظٹظ„ظٹط©', en: 'Night Storm', chip: 'Storm', colors: ['#6f7bff', '#00bfff', '#d46bff'] },
+  { ar: 'ط¬ط­ظٹظ… ط§ظ„ظƒظˆط§ظƒط¨', en: 'Inferno Orbit', chip: 'Inferno', colors: ['#ff5c5c', '#ff7a00', '#ffd166'] },
+  { ar: 'طھط§ط¬ ط§ظ„ظ…ط¬ط±ط©', en: 'Galaxy Crown', chip: 'Crown', colors: ['#ffd700', '#ff67c4', '#6ae3ff'] },
+  { ar: 'ط؛ط²ظˆ ط§ظ„ط´ظپظ‚', en: 'Aurora Raid', chip: 'Raid', colors: ['#66ffb3', '#7f5cff', '#ffaf45'] },
+  { ar: 'ط£ط³ط·ظˆط±ط© ط§ظ„ظ†ط¬ظ…', en: 'Star Legend', chip: 'Legend', colors: ['#ffffff', '#ffe76a', '#89c8ff'] },
 ];
 
 // ===== LEVEL CONFIG =====
 const LEVELS = [
-  { id: 1, name: { ar: 'المبتدئ', en: 'Beginner' }, target: 300, diff: 1, boardExtra: 0 },
-  { id: 2, name: { ar: 'سهل', en: 'Easy' }, target: 600, diff: 1, boardExtra: 1 },
-  { id: 3, name: { ar: 'عادي', en: 'Normal' }, target: 900, diff: 1, boardExtra: 2 },
-  { id: 4, name: { ar: 'متوسط', en: 'Medium' }, target: 1400, diff: 2, boardExtra: 3 },
-  { id: 5, name: { ar: 'صعب', en: 'Hard' }, target: 2000, diff: 2, boardExtra: 5 },
-  { id: 6, name: { ar: 'خبير', en: 'Expert' }, target: 3000, diff: 2, boardExtra: 7 },
-  { id: 7, name: { ar: 'أسطوري', en: 'Legendary' }, target: 4500, diff: 3, boardExtra: 10 },
-  { id: 8, name: { ar: 'عاصفة', en: 'Storm' }, target: 6000, diff: 3, boardExtra: 12 },
-  { id: 9, name: { ar: 'نار', en: 'Inferno' }, target: 8000, diff: 3, boardExtra: 15 },
-  { id: 10, name: { ar: 'الملك', en: 'King' }, target: 12000, diff: 3, boardExtra: 20 },
-  { id: 11, name: { ar: 'غزو', en: 'Invasion' }, target: 15000, diff: 3, boardExtra: 25 },
-  { id: 12, name: { ar: 'الأسطورة', en: 'Legend' }, target: 20000, diff: 3, boardExtra: 30 },
+  { id: 1, name: { ar: 'ط§ظ„ظ…ط¨طھط¯ط¦', en: 'Beginner' }, target: 300, diff: 1, boardExtra: 0 },
+  { id: 2, name: { ar: 'ط³ظ‡ظ„', en: 'Easy' }, target: 600, diff: 1, boardExtra: 1 },
+  { id: 3, name: { ar: 'ط¹ط§ط¯ظٹ', en: 'Normal' }, target: 900, diff: 1, boardExtra: 2 },
+  { id: 4, name: { ar: 'ظ…طھظˆط³ط·', en: 'Medium' }, target: 1400, diff: 2, boardExtra: 3 },
+  { id: 5, name: { ar: 'طµط¹ط¨', en: 'Hard' }, target: 2000, diff: 2, boardExtra: 5 },
+  { id: 6, name: { ar: 'ط®ط¨ظٹط±', en: 'Expert' }, target: 3000, diff: 2, boardExtra: 7 },
+  { id: 7, name: { ar: 'ط£ط³ط·ظˆط±ظٹ', en: 'Legendary' }, target: 4500, diff: 3, boardExtra: 10 },
+  { id: 8, name: { ar: 'ط¹ط§طµظپط©', en: 'Storm' }, target: 6000, diff: 3, boardExtra: 12 },
+  { id: 9, name: { ar: 'ظ†ط§ط±', en: 'Inferno' }, target: 8000, diff: 3, boardExtra: 15 },
+  { id: 10, name: { ar: 'ط§ظ„ظ…ظ„ظƒ', en: 'King' }, target: 12000, diff: 3, boardExtra: 20 },
+  { id: 11, name: { ar: 'ط؛ط²ظˆ', en: 'Invasion' }, target: 15000, diff: 3, boardExtra: 25 },
+  { id: 12, name: { ar: 'ط§ظ„ط£ط³ط·ظˆط±ط©', en: 'Legend' }, target: 20000, diff: 3, boardExtra: 30 },
 ];
 
 // ===== PIECES DEFINITIONS =====
@@ -107,47 +107,47 @@ const COLORS = ['color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6'
 
 // ===== ACHIEVEMENTS =====
 const ACHIEVEMENTS_DEF = [
-  { id: 'first_win', icon: '🏆', name: { ar: 'أول فوز', en: 'First Win' }, desc: { ar: 'افوز لأول مرة', en: 'Win your first game' } },
-  { id: 'score_1000', icon: '⭐', name: { ar: 'ألف نقطة', en: '1000 Points' }, desc: { ar: '1000+ نقطة', en: 'Score 1000+' } },
-  { id: 'score_5000', icon: '💫', name: { ar: 'خمسة آلاف', en: '5000 Points' }, desc: { ar: '5000+ نقطة', en: 'Score 5000+' } },
-  { id: 'win_5', icon: '🌟', name: { ar: 'خبير', en: 'Expert' }, desc: { ar: 'افوز 5 مرات', en: 'Win 5 times' } },
-  { id: 'level_5', icon: '🎯', name: { ar: 'وصل للمستوى 5', en: 'Reach Level 5' }, desc: { ar: 'العب حتى المستوى 5', en: 'Play until level 5' } },
-  { id: 'combo_3', icon: '🔥', name: { ar: 'سلسلة × 3', en: 'Combo x3' }, desc: { ar: 'سلسلة 3 مرات متتالية', en: '3-combo in a row' } },
-  { id: 'perfect', icon: '💎', name: { ar: 'مثالي', en: 'Perfect' }, desc: { ar: 'امسح الكل دفعة واحدة', en: 'Clear entire board' } },
-  { id: 'speed_demon', icon: '⚡', name: { ar: 'سريع جداً', en: 'Speed Demon' }, desc: { ar: 'افوز خلال دقيقة', en: 'Win within a minute' } },
-  { id: 'explorer', icon: '🗺️', name: { ar: 'مستكشف', en: 'Explorer' }, desc: { ar: 'العب 10 مباريات', en: 'Play 10 games' } },
+  { id: 'first_win', icon: 'ًںڈ†', name: { ar: 'ط£ظˆظ„ ظپظˆط²', en: 'First Win' }, desc: { ar: 'ط§ظپظˆط² ظ„ط£ظˆظ„ ظ…ط±ط©', en: 'Win your first game' } },
+  { id: 'score_1000', icon: 'â­گ', name: { ar: 'ط£ظ„ظپ ظ†ظ‚ط·ط©', en: '1000 Points' }, desc: { ar: '1000+ ظ†ظ‚ط·ط©', en: 'Score 1000+' } },
+  { id: 'score_5000', icon: 'ًں’«', name: { ar: 'ط®ظ…ط³ط© ط¢ظ„ط§ظپ', en: '5000 Points' }, desc: { ar: '5000+ ظ†ظ‚ط·ط©', en: 'Score 5000+' } },
+  { id: 'win_5', icon: 'ًںŒں', name: { ar: 'ط®ط¨ظٹط±', en: 'Expert' }, desc: { ar: 'ط§ظپظˆط² 5 ظ…ط±ط§طھ', en: 'Win 5 times' } },
+  { id: 'level_5', icon: 'ًںژ¯', name: { ar: 'ظˆطµظ„ ظ„ظ„ظ…ط³طھظˆظ‰ 5', en: 'Reach Level 5' }, desc: { ar: 'ط§ظ„ط¹ط¨ ط­طھظ‰ ط§ظ„ظ…ط³طھظˆظ‰ 5', en: 'Play until level 5' } },
+  { id: 'combo_3', icon: 'ًں”¥', name: { ar: 'ط³ظ„ط³ظ„ط© أ— 3', en: 'Combo x3' }, desc: { ar: 'ط³ظ„ط³ظ„ط© 3 ظ…ط±ط§طھ ظ…طھطھط§ظ„ظٹط©', en: '3-combo in a row' } },
+  { id: 'perfect', icon: 'ًں’ژ', name: { ar: 'ظ…ط«ط§ظ„ظٹ', en: 'Perfect' }, desc: { ar: 'ط§ظ…ط³ط­ ط§ظ„ظƒظ„ ط¯ظپط¹ط© ظˆط§ط­ط¯ط©', en: 'Clear entire board' } },
+  { id: 'speed_demon', icon: 'âڑ،', name: { ar: 'ط³ط±ظٹط¹ ط¬ط¯ط§ظ‹', en: 'Speed Demon' }, desc: { ar: 'ط§ظپظˆط² ط®ظ„ط§ظ„ ط¯ظ‚ظٹظ‚ط©', en: 'Win within a minute' } },
+  { id: 'explorer', icon: 'ًں—؛ï¸ڈ', name: { ar: 'ظ…ط³طھظƒط´ظپ', en: 'Explorer' }, desc: { ar: 'ط§ظ„ط¹ط¨ 10 ظ…ط¨ط§ط±ظٹط§طھ', en: 'Play 10 games' } },
 ];
 
 // ===== LOCALIZATION =====
 const T = {
   ar: {
-    levelComplete: 'مرحى! أكملت المستوى! 🎉',
-    levelFail: 'حاول مجدداً! 💪',
-    pieceSelected: 'اضغط على الخلية لوضع البلوك',
-    noFit: 'لا يمكن وضعه هنا!',
-    comboMsg: (n) => `سلسلة × ${n}! 🔥`,
-    scoreLabel: 'النقاط:',
-    newRecord: '🎊 رقم قياسي جديد!',
-    userExists: 'اسم المستخدم موجود مسبقاً',
-    wrongPass: 'كلمة السر خاطئة',
-    userNotFound: 'المستخدم غير موجود',
-    fillFields: 'يرجى ملء جميع الحقول',
-    achUnlocked: (name) => `🏅 إنجاز جديد: ${name}`,
-    guestMode: 'وضع الضيف',
+    levelComplete: 'ظ…ط±ط­ظ‰! ط£ظƒظ…ظ„طھ ط§ظ„ظ…ط³طھظˆظ‰! ًںژ‰',
+    levelFail: 'ط­ط§ظˆظ„ ظ…ط¬ط¯ط¯ط§ظ‹! ًں’ھ',
+    pieceSelected: 'ط§ط¶ط؛ط· ط¹ظ„ظ‰ ط§ظ„ط®ظ„ظٹط© ظ„ظˆط¶ط¹ ط§ظ„ط¨ظ„ظˆظƒ',
+    noFit: 'ظ„ط§ ظٹظ…ظƒظ† ظˆط¶ط¹ظ‡ ظ‡ظ†ط§!',
+    comboMsg: (n) => `ط³ظ„ط³ظ„ط© أ— ${n}! ًں”¥`,
+    scoreLabel: 'ط§ظ„ظ†ظ‚ط§ط·:',
+    newRecord: 'ًںژٹ ط±ظ‚ظ… ظ‚ظٹط§ط³ظٹ ط¬ط¯ظٹط¯!',
+    userExists: 'ط§ط³ظ… ط§ظ„ظ…ط³طھط®ط¯ظ… ظ…ظˆط¬ظˆط¯ ظ…ط³ط¨ظ‚ط§ظ‹',
+    wrongPass: 'ظƒظ„ظ…ط© ط§ظ„ط³ط± ط®ط§ط·ط¦ط©',
+    userNotFound: 'ط§ظ„ظ…ط³طھط®ط¯ظ… ط؛ظٹط± ظ…ظˆط¬ظˆط¯',
+    fillFields: 'ظٹط±ط¬ظ‰ ظ…ظ„ط، ط¬ظ…ظٹط¹ ط§ظ„ط­ظ‚ظˆظ„',
+    achUnlocked: (name) => `ًںڈ… ط¥ظ†ط¬ط§ط² ط¬ط¯ظٹط¯: ${name}`,
+    guestMode: 'ظˆط¶ط¹ ط§ظ„ط¶ظٹظپ',
   },
   en: {
-    levelComplete: 'Amazing! Level Complete! 🎉',
-    levelFail: 'Try Again! 💪',
+    levelComplete: 'Amazing! Level Complete! ًںژ‰',
+    levelFail: 'Try Again! ًں’ھ',
     pieceSelected: 'Tap a cell to place the block',
     noFit: "Can't place it here!",
-    comboMsg: (n) => `Combo × ${n}! 🔥`,
+    comboMsg: (n) => `Combo أ— ${n}! ًں”¥`,
     scoreLabel: 'Score:',
-    newRecord: '🎊 New Record!',
+    newRecord: 'ًںژٹ New Record!',
     userExists: 'Username already taken',
     wrongPass: 'Wrong password',
     userNotFound: 'User not found',
     fillFields: 'Please fill all fields',
-    achUnlocked: (name) => `🏅 Achievement: ${name}`,
+    achUnlocked: (name) => `ًںڈ… Achievement: ${name}`,
     guestMode: 'Guest Mode',
   }
 };
@@ -157,26 +157,6 @@ const t = (key, ...args) => {
 };
 
 // ===== LANGUAGE =====
-function menuSettingsToggleLang() {
-  toggleLang();
-}
-
-function menuSettingsToggleMusic() {
-  const music = document.getElementById('music-player');
-  if (!music) return;
-
-  music.classList.remove('start-settings-music');
-  music.style.display = '';
-
-  const panel = document.getElementById('music-panel');
-  const panelHidden = panel ? panel.classList.contains('hidden') : true;
-
-  if (panelHidden) {
-    if (!musicPanelOpen) toggleMusicPanel();
-  } else if (musicPanelOpen) {
-    toggleMusicPanel();
-  }
-}
 function toggleLang() {
   currentLang = currentLang === 'ar' ? 'en' : 'ar';
   document.documentElement.lang = currentLang;
@@ -208,7 +188,7 @@ function saveUser(data) {
 function defaultUser(username) {
   return {
     username,
-    avatar: '🎮', highScore: 0, totalWins: 0, totalGames: 0,
+    avatar: 'ًںژ®', highScore: 0, totalWins: 0, totalGames: 0,
     bestStreak: 0, unlockedLevels: [1], completedLevels: [], memoryUnlockedLevels: [1],
     levelStars: {}, achievements: [], gameHistory: [], memoryBestMoves: null, avatarImage: '', coverImage: '', createdAt: Date.now()
   };
@@ -217,8 +197,8 @@ function defaultUser(username) {
 // ===== SETUP / PROFILE MANAGEMENT =====
 
 // Selected avatar during setup
-let setupAvatar = '🎮';
-let editAvatar  = '🎮';
+let setupAvatar = 'ًںژ®';
+let editAvatar  = 'ًںژ®';
 let editAvatarImage = '';
 
 function pickAvatar(el, emoji) {
@@ -249,7 +229,7 @@ function createProfile() {
 
 // ---- Edit name / avatar from menu ----
 function showEditName() {
-  editAvatar = currentUser.avatar || '🎮';
+  editAvatar = currentUser.avatar || 'ًںژ®';
   editAvatarImage = currentUser.avatarImage || '';
   renderAvatarNode(document.getElementById('edit-av-preview'), { avatar: editAvatar, avatarImage: editAvatarImage });
   document.getElementById('edit-name-input').value = currentUser.username;
@@ -292,7 +272,7 @@ function saveEditName() {
 
   closeEditName();
   showMenu();
-  showToast(currentLang === 'ar' ? '✅ تم الحفظ!' : '✅ Saved!');
+  showToast(currentLang === 'ar' ? 'âœ… طھظ… ط§ظ„ط­ظپط¸!' : 'âœ… Saved!');
 }
 
 function closeEditName() {
@@ -318,7 +298,7 @@ function handleAvatarUpload(event) {
     renderAvatarNode(document.getElementById('menu-avatar'), currentUser);
     renderAvatarNode(document.getElementById('edit-av-preview'), { avatar: editAvatar || currentUser.avatar, avatarImage: editAvatarImage });
     saveUser(currentUser);
-    showToast(currentLang === 'ar' ? '🖼️ تم تجهيز صورتك الشخصية' : '🖼️ Your profile image is ready');
+    showToast(currentLang === 'ar' ? 'ًں–¼ï¸ڈ طھظ… طھط¬ظ‡ظٹط² طµظˆط±طھظƒ ط§ظ„ط´ط®طµظٹط©' : 'ًں–¼ï¸ڈ Your profile image is ready');
   });
   event.target.value = '';
 }
@@ -331,14 +311,14 @@ function handleCoverUpload(event) {
     currentUser.coverImage = dataUrl;
     applyCoverImage(document.getElementById('profile-cover'), currentUser.coverImage);
     saveUser(currentUser);
-    showToast(currentLang === 'ar' ? '🌌 تم تحديث الغلاف' : '🌌 Cover updated');
+    showToast(currentLang === 'ar' ? 'ًںŒŒ طھظ… طھط­ط¯ظٹط« ط§ظ„ط؛ظ„ط§ظپ' : 'ًںŒŒ Cover updated');
   });
   event.target.value = '';
 }
 
 function readImageFile(file, onLoad) {
   if (!file.type.startsWith('image/')) {
-    showToast(currentLang === 'ar' ? 'اختر صورة صحيحة' : 'Choose a valid image');
+    showToast(currentLang === 'ar' ? 'ط§ط®طھط± طµظˆط±ط© طµط­ظٹط­ط©' : 'Choose a valid image');
     return;
   }
   const reader = new FileReader();
@@ -357,7 +337,7 @@ function loadOrSetup() {
       return;
     }
   }
-  // First time — show setup screen
+  // First time â€” show setup screen
   showScreen('setup-screen');
 }
 
@@ -365,65 +345,6 @@ function loadOrSetup() {
 function logout() { loadOrSetup(); }
 
 // ===== NAVIGATION =====
-function closeStartSettingsMenu() {
-  const menu = document.getElementById('start-settings-menu');
-  if (menu) menu.classList.remove('open');
-}
-
-function toggleStartSettingsMenu() {
-  const menu = document.getElementById('start-settings-menu');
-  if (!menu) return;
-  menu.classList.toggle('open');
-}
-
-function openStartMusicSettings() {
-  const music = document.getElementById('music-player');
-  if (music) {
-    music.classList.add('start-settings-music');
-    music.style.display = '';
-  }
-  closeStartSettingsMenu();
-  if (!musicPanelOpen) toggleMusicPanel();
-}
-
-function setupStartSettingsEvents() {
-  document.addEventListener('click', (event) => {
-    const wrap = document.getElementById('start-settings-wrap');
-    if (!wrap) return;
-    if (!wrap.contains(event.target)) closeStartSettingsMenu();
-  });
-
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeStartSettingsMenu();
-  });
-}
-
-function updateFloatingUiForScreen(screenId) {
-  const music = document.getElementById('music-player');
-  const lang = document.getElementById('lang-btn');
-  const quick = document.getElementById('start-settings-wrap');
-  const isStartScreen = screenId === 'setup-screen';
-
-  if (lang) lang.style.display = 'none';
-  if (quick) quick.style.display = isStartScreen ? '' : 'none';
-
-  if (music) {
-    if (!isStartScreen) {
-      music.classList.remove('start-settings-music');
-      music.style.display = 'none';
-      if (musicPanelOpen) toggleMusicPanel();
-    } else if (musicPanelOpen) {
-      music.classList.add('start-settings-music');
-      music.style.display = '';
-    } else {
-      music.classList.remove('start-settings-music');
-      music.style.display = 'none';
-    }
-  }
-
-  if (!isStartScreen) closeStartSettingsMenu();
-}
-
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => {
     s.classList.remove('active');
@@ -431,13 +352,12 @@ function showScreen(id) {
   });
   const screen = document.getElementById(id);
   screen.style.display = 'flex';
-  updateFloatingUiForScreen(id);
   requestAnimationFrame(() => screen.classList.add('active'));
 }
 function showMenu() {
   closeModals();
   if (currentUser && !currentUser.isGuest) saveUser(currentUser);
-  document.getElementById('menu-username').textContent = currentUser?.username || 'لاعب';
+  document.getElementById('menu-username').textContent = currentUser?.username || 'ظ„ط§ط¹ط¨';
   renderAvatarNode(document.getElementById('menu-avatar'), currentUser);
   document.getElementById('menu-score').textContent = currentUser?.highScore || 0;
   showScreen('menu-screen');
@@ -488,9 +408,9 @@ function renderLevels() {
       <div class="level-num">${lv.id}</div>
       <div class="level-name">${lv.name[currentLang]}</div>
       <div class="level-theme">${theme[currentLang]}</div>
-      <div class="level-stars">${'⭐'.repeat(lvStars)}${'☆'.repeat(3 - lvStars)}</div>
-      <div class="level-target">${currentLang === 'ar' ? 'الهدف:' : 'Target:'} ${lv.target}</div>
-      ${!isUnlocked ? '<div style="font-size:20px;margin-top:4px">🔒</div>' : ''}
+      <div class="level-stars">${'â­گ'.repeat(lvStars)}${'âک†'.repeat(3 - lvStars)}</div>
+      <div class="level-target">${currentLang === 'ar' ? 'ط§ظ„ظ‡ط¯ظپ:' : 'Target:'} ${lv.target}</div>
+      ${!isUnlocked ? '<div style="font-size:20px;margin-top:4px">ًں”’</div>' : ''}
     `;
     if (isUnlocked) card.onclick = () => startGame(lv.id);
     grid.appendChild(card);
@@ -778,7 +698,7 @@ function checkLines() {
     const allEmpty = board.every(row => row.every(c => c === null));
     if (allEmpty) {
       gameState.score += 1000;
-      showToast('💎 مسح كامل! +1000');
+      showToast('ًں’ژ ظ…ط³ط­ ظƒط§ظ…ظ„! +1000');
       checkAchievement('perfect', true);
       playSound('perfect');
     } else {
@@ -892,15 +812,15 @@ function winLevel() {
   playSound('win');
 
   // Show win modal
-  document.getElementById('win-stars').textContent = '⭐'.repeat(stars);
+  document.getElementById('win-stars').textContent = 'â­گ'.repeat(stars);
   document.getElementById('win-score-text').textContent =
-    `${currentLang === 'ar' ? 'نقاطك:' : 'Score:'} ${gameState.score}`;
+    `${currentLang === 'ar' ? 'ظ†ظ‚ط§ط·ظƒ:' : 'Score:'} ${gameState.score}`;
 
   const badges = document.getElementById('win-badges');
   badges.innerHTML = '';
-  if (stars === 3) badges.innerHTML += `<span class="win-badge">${currentLang === 'ar' ? '✨ مثالي' : '✨ Perfect'}</span>`;
-  if (gameState.combo >= 3) badges.innerHTML += `<span class="win-badge">🔥 Combo x${gameState.combo}</span>`;
-  if (timeSecs < 60) badges.innerHTML += `<span class="win-badge">⚡ ${currentLang === 'ar' ? 'سريع' : 'Speed'}</span>`;
+  if (stars === 3) badges.innerHTML += `<span class="win-badge">${currentLang === 'ar' ? 'âœ¨ ظ…ط«ط§ظ„ظٹ' : 'âœ¨ Perfect'}</span>`;
+  if (gameState.combo >= 3) badges.innerHTML += `<span class="win-badge">ًں”¥ Combo x${gameState.combo}</span>`;
+  if (timeSecs < 60) badges.innerHTML += `<span class="win-badge">âڑ، ${currentLang === 'ar' ? 'ط³ط±ظٹط¹' : 'Speed'}</span>`;
 
   const modal = document.getElementById('win-modal');
   const nextBtn = modal.querySelector('.btn-play');
@@ -919,7 +839,7 @@ function gameOver() {
   }
   playSound('lose');
   document.getElementById('go-score-text').textContent =
-    `${currentLang === 'ar' ? 'نقاطك:' : 'Score:'} ${gameState.score}`;
+    `${currentLang === 'ar' ? 'ظ†ظ‚ط§ط·ظƒ:' : 'Score:'} ${gameState.score}`;
   document.getElementById('gameover-modal').classList.remove('hidden');
 }
 
@@ -950,9 +870,9 @@ function closeModals() {
 
 // ===== MEMORY GAME =====
 const MEMORY_SYMBOLS = [
-  '🌙', '⭐', '☄️', '🪐', '🌈', '🎧', '🚀', '💎',
-  '🦁', '🐉', '🦊', '🤖', '👾', '🐺', '🦅', '🦄',
-  '🔥', '❄️', '⚡', '🍀', '🍎', '🍓', '🏀', '🎮', '🧿', '💠'
+  'ًںŒ™', 'â­گ', 'âک„ï¸ڈ', 'ًںھگ', 'ًںŒˆ', 'ًںژ§', 'ًںڑ€', 'ًں’ژ',
+  'ًں¦پ', 'ًںگ‰', 'ًں¦ٹ', 'ًں¤–', 'ًں‘¾', 'ًںگ؛', 'ًں¦…', 'ًں¦„',
+  'ًں”¥', 'â‌„ï¸ڈ', 'âڑ،', 'ًںچ€', 'ًںچژ', 'ًںچ“', 'ًںڈ€', 'ًںژ®', 'ًں§؟', 'ًں’ '
 ];
 
 function renderMemoryLevels() {
@@ -968,9 +888,9 @@ function renderMemoryLevels() {
     card.innerHTML = `
       <div class="level-num">${level.id}</div>
       <div class="level-name">${level.name[currentLang]}</div>
-      <div class="level-stars">${'🃏'.repeat(Math.min(level.pairs, 3))}</div>
-      <div class="level-target">${currentLang === 'ar' ? 'الأزواج:' : 'Pairs:'} ${level.pairs}</div>
-      ${!isUnlocked ? '<div style="font-size:24px; margin-top:8px;">🔒</div>' : ''}
+      <div class="level-stars">${'ًںƒڈ'.repeat(Math.min(level.pairs, 3))}</div>
+      <div class="level-target">${currentLang === 'ar' ? 'ط§ظ„ط£ط²ظˆط§ط¬:' : 'Pairs:'} ${level.pairs}</div>
+      ${!isUnlocked ? '<div style="font-size:24px; margin-top:8px;">ًں”’</div>' : ''}
     `;
     if (isUnlocked) {
       card.onclick = () => {
@@ -1149,8 +1069,8 @@ function finishMemoryGame() {
 
   // Show Modal
   const modal = document.getElementById('win-modal');
-  document.getElementById('win-stars').textContent = '⭐'.repeat(stars) + '☆'.repeat(3 - stars);
-  document.getElementById('win-score-text').textContent = (currentLang === 'ar' ? `أنهيت اللعبة في ${moves} حركة!` : `Finished in ${moves} moves!`);
+  document.getElementById('win-stars').textContent = 'â­گ'.repeat(stars) + 'âک†'.repeat(3 - stars);
+  document.getElementById('win-score-text').textContent = (currentLang === 'ar' ? `ط£ظ†ظ‡ظٹطھ ط§ظ„ظ„ط¹ط¨ط© ظپظٹ ${moves} ط­ط±ظƒط©!` : `Finished in ${moves} moves!`);
   
   // Customize Next Button for Memory
   const nextBtn = modal.querySelector('.btn-play');
@@ -1213,16 +1133,16 @@ function renderProfile() {
   histList.innerHTML = '';
   const history = currentUser.gameHistory || [];
   if (history.length === 0) {
-    histList.innerHTML = `<p style="color:var(--text-dim);text-align:center">${currentLang === 'ar' ? 'لا يوجد سجل بعد' : 'No games yet'}</p>`;
+    histList.innerHTML = `<p style="color:var(--text-dim);text-align:center">${currentLang === 'ar' ? 'ظ„ط§ ظٹظˆط¬ط¯ ط³ط¬ظ„ ط¨ط¹ط¯' : 'No games yet'}</p>`;
   } else {
     history.slice(0, 10).forEach(h => {
       const item = document.createElement('div');
       item.className = 'history-item';
       const d = new Date(h.date);
       item.innerHTML = `
-        <span class="history-level">${currentLang === 'ar' ? 'مستوى' : 'Level'} ${h.level}</span>
+        <span class="history-level">${currentLang === 'ar' ? 'ظ…ط³طھظˆظ‰' : 'Level'} ${h.level}</span>
         <span class="history-score">${h.score}</span>
-        <span class="history-result ${h.win ? 'result-win' : 'result-loss'}">${h.win ? (currentLang === 'ar' ? '✅ فوز' : '✅ Win') : (currentLang === 'ar' ? '❌ خسارة' : '❌ Loss')}</span>
+        <span class="history-result ${h.win ? 'result-win' : 'result-loss'}">${h.win ? (currentLang === 'ar' ? 'âœ… ظپظˆط²' : 'âœ… Win') : (currentLang === 'ar' ? 'â‌Œ ط®ط³ط§ط±ط©' : 'â‌Œ Loss')}</span>
       `;
       histList.appendChild(item);
     });
@@ -1242,7 +1162,7 @@ function changeAvatar(emoji) {
 function renderAvatarNode(node, userLike) {
   if (!node) return;
   const avatarImage = userLike?.avatarImage;
-  const avatar = userLike?.avatar || '🎮';
+  const avatar = userLike?.avatar || 'ًںژ®';
   if (avatarImage) {
     node.innerHTML = `<img src="${avatarImage}" alt="avatar" class="avatar-img">`;
   } else {
@@ -1274,13 +1194,13 @@ function renderLeaderboard() {
   list.forEach((u, i) => {
     const item = document.createElement('div');
     item.className = `lb-item${i === 0 ? ' top1' : i === 1 ? ' top2' : i === 2 ? ' top3' : ''}`;
-    const medals = ['🥇', '🥈', '🥉'];
+    const medals = ['ًں¥‡', 'ًں¥ˆ', 'ًں¥‰'];
     item.innerHTML = `
       <span class="lb-rank">${medals[i] || '#' + (i + 1)}</span>
-      <span class="lb-avatar">${u.avatar || '🎮'}</span>
+      <span class="lb-avatar">${u.avatar || 'ًںژ®'}</span>
       <div class="lb-info">
         <div class="lb-name">${u.username}</div>
-        <div class="lb-wins">${currentLang === 'ar' ? 'فوز:' : 'Wins:'} ${u.totalWins || 0}</div>
+        <div class="lb-wins">${currentLang === 'ar' ? 'ظپظˆط²:' : 'Wins:'} ${u.totalWins || 0}</div>
       </div>
       <span class="lb-score">${u.highScore || 0}</span>
     `;
@@ -1291,7 +1211,7 @@ function renderLeaderboard() {
   });
 
   if (list.length === 0) {
-    container.innerHTML = `<p style="color:var(--text-dim);text-align:center;padding:20px">${currentLang === 'ar' ? 'لا يوجد لاعبون بعد' : 'No players yet'}</p>`;
+    container.innerHTML = `<p style="color:var(--text-dim);text-align:center;padding:20px">${currentLang === 'ar' ? 'ظ„ط§ ظٹظˆط¬ط¯ ظ„ط§ط¹ط¨ظˆظ† ط¨ط¹ط¯' : 'No players yet'}</p>`;
   }
 }
 
@@ -1323,28 +1243,28 @@ const TRACKS = [
     file: 'lemonmusiclab-lofi-lofi-music-499264.mp3',
     name: 'Lofi Vibes',
     artist: 'Lemon Music Lab',
-    art: '🍋',
+    art: 'ًںچ‹',
     accent: 'var(--c2)'
   },
   {
     file: 'freemusicforvideo-lofi-chill-music-495628.mp3',
     name: 'Chill Beats',
     artist: 'Free Music For Video',
-    art: '🌙',
+    art: 'ًںŒ™',
     accent: 'var(--c7)'
   },
   {
     file: 'fassounds-good-night-lofi-cozy-chill-music-160166.mp3',
     name: 'Good Night',
     artist: 'Fassounds',
-    art: '✨',
+    art: 'âœ¨',
     accent: 'var(--c6)'
   },
   {
     file: 'the_mountain-lofi-lofi-music-496553.mp3',
     name: 'The Mountain',
     artist: 'The Mountain',
-    art: '🏔️',
+    art: 'ًںڈ”ï¸ڈ',
     accent: 'var(--c3)'
   },
 ];
@@ -1362,20 +1282,20 @@ function initMusicPlayer() {
   audioEl.addEventListener('timeupdate', updateProgress);
   audioEl.addEventListener('loadedmetadata', updateTotalTime);
   audioEl.addEventListener('play', () => {
-    document.getElementById('play-pause-btn').textContent = '⏸';
+    document.getElementById('play-pause-btn').textContent = 'âڈ¸';
     document.getElementById('track-art').classList.add('playing');
     document.getElementById('music-waves').classList.remove('paused');
-    document.getElementById('music-toggle-icon').textContent = '🎵';
+    document.getElementById('music-toggle-icon').textContent = 'ًںژµ';
     updateActiveTrackUI();
   });
   audioEl.addEventListener('pause', () => {
-    document.getElementById('play-pause-btn').textContent = '▶';
+    document.getElementById('play-pause-btn').textContent = 'â–¶';
     document.getElementById('track-art').classList.remove('playing');
     document.getElementById('music-waves').classList.add('paused');
     updateActiveTrackUI();
   });
   audioEl.addEventListener('error', () => {
-    showToast(currentLang === 'ar' ? 'تعذر تشغيل هذه الأغنية' : 'Unable to play this track');
+    showToast(currentLang === 'ar' ? 'طھط¹ط°ط± طھط´ط؛ظٹظ„ ظ‡ط°ظ‡ ط§ظ„ط£ط؛ظ†ظٹط©' : 'Unable to play this track');
   });
   buildTrackList();
   buildQuickPicks();
@@ -1617,8 +1537,7 @@ function setupResponsiveViewport() {
 // ===== INIT =====
 window.onload = () => {
   setupResponsiveViewport();
-  setupStartSettingsEvents();
-  createParticles();
+createParticles();
   initMusicPlayer();
   loadOrSetup();
 
@@ -1626,10 +1545,10 @@ window.onload = () => {
   const users = getUsers();
   if (Object.keys(users).length === 0) {
     const demoUsers = [
-      { username: 'أبو علي', highScore: 15000, totalWins: 25, avatar: '🦁', totalGames: 40, bestStreak: 5, unlockedLevels: LEVELS.map(l=>l.id), completedLevels: [1,2,3,4,5], levelStars: {1:3,2:3,3:2}, achievements: ['first_win','score_1000','win_5'], gameHistory: [] },
-      { username: 'سارة', highScore: 12000, totalWins: 18, avatar: '🦊', totalGames: 30, bestStreak: 4, unlockedLevels: [1,2,3,4,5,6,7], completedLevels: [1,2,3,4], levelStars: {1:3,2:2,3:1}, achievements: ['first_win','score_1000'], gameHistory: [] },
-      { username: 'GamePro', highScore: 20000, totalWins: 40, avatar: '🤖', totalGames: 60, bestStreak: 8, unlockedLevels: LEVELS.map(l=>l.id), completedLevels: [1,2,3,4,5,6,7,8], levelStars: {1:3,2:3,3:3,4:2}, achievements: ['first_win','score_1000','score_5000','win_5'], gameHistory: [] },
-      { username: 'بطل', highScore: 8000, totalWins: 10, avatar: '🐉', totalGames: 18, bestStreak: 3, unlockedLevels: [1,2,3,4,5], completedLevels: [1,2,3], levelStars: {1:2,2:1}, achievements: ['first_win'], gameHistory: [] },
+      { username: 'ط£ط¨ظˆ ط¹ظ„ظٹ', highScore: 15000, totalWins: 25, avatar: 'ًں¦پ', totalGames: 40, bestStreak: 5, unlockedLevels: LEVELS.map(l=>l.id), completedLevels: [1,2,3,4,5], levelStars: {1:3,2:3,3:2}, achievements: ['first_win','score_1000','win_5'], gameHistory: [] },
+      { username: 'ط³ط§ط±ط©', highScore: 12000, totalWins: 18, avatar: 'ًں¦ٹ', totalGames: 30, bestStreak: 4, unlockedLevels: [1,2,3,4,5,6,7], completedLevels: [1,2,3,4], levelStars: {1:3,2:2,3:1}, achievements: ['first_win','score_1000'], gameHistory: [] },
+      { username: 'GamePro', highScore: 20000, totalWins: 40, avatar: 'ًں¤–', totalGames: 60, bestStreak: 8, unlockedLevels: LEVELS.map(l=>l.id), completedLevels: [1,2,3,4,5,6,7,8], levelStars: {1:3,2:3,3:3,4:2}, achievements: ['first_win','score_1000','score_5000','win_5'], gameHistory: [] },
+      { username: 'ط¨ط·ظ„', highScore: 8000, totalWins: 10, avatar: 'ًںگ‰', totalGames: 18, bestStreak: 3, unlockedLevels: [1,2,3,4,5], completedLevels: [1,2,3], levelStars: {1:2,2:1}, achievements: ['first_win'], gameHistory: [] },
     ];
     demoUsers.forEach(u => { u.password = btoa('demo'); users[u.username] = u; });
     saveUsers(users);
@@ -1649,18 +1568,8 @@ let rState = {
   lastEnemy: 0, bossActive: false, boss: null
 };
 
-let playerShipType = { type: 'emoji', value: '🚀', frame: 0 };
+let playerShipType = { type: 'emoji', value: 'ًںڑ€', frame: 0 };
 let playerShipColor = '#00ffff';
-let raidInputState = {
-  leftHeld: false,
-  rightHeld: false,
-  shootHeld: false,
-  shootTimer: null,
-  pointerId: null,
-  dragActive: false,
-  dragOffsetX: 0,
-  handlersBound: false
-};
 let shipSpriteSheet = new Image();
 shipSpriteSheet.onload = () => { console.log('Ships Sprite Loaded Successfully'); };
 shipSpriteSheet.onerror = () => { console.error('Error Loading Ships Sprite'); };
@@ -1691,145 +1600,18 @@ function showDesertRaid() { // Reused function name for backwards compatibility
   if (bestEl) bestEl.textContent = currentUser && currentUser.raidBest ? currentUser.raidBest : 0;
   
   if (!raidCanvas) raidCanvas = document.getElementById('raid-canvas');
-  if (raidCanvas) resizeRaidCanvas();
-}
-
-function resizeRaidCanvas() {
-  if (!raidCanvas) return;
-  const wrap = document.querySelector('.raid-game-wrap');
-  if (!wrap) return;
-
-  const oldW = raidCanvas.width || wrap.clientWidth;
-  const oldH = raidCanvas.height || wrap.clientHeight;
-  const nextW = wrap.clientWidth;
-  const nextH = wrap.clientHeight;
-
-  if (!nextW || !nextH) return;
-  raidCanvas.width = nextW;
-  raidCanvas.height = nextH;
-
-  if (rState && rState.player) {
-    const margin = (nextW - (rState.canyonWidth || nextW * 0.95)) / 2;
-    const xRatio = oldW > 0 ? rState.player.x / oldW : 0.5;
-    const yRatio = oldH > 0 ? rState.player.y / oldH : 0.82;
-    rState.player.x = Math.max(margin, Math.min(nextW - margin - rState.player.w, Math.floor(nextW * xRatio)));
-    rState.player.y = Math.max(0, Math.min(nextH - rState.player.h - 6, Math.floor(nextH * yRatio)));
-    rState.canyonWidth = nextW * 0.95;
+  if (raidCanvas) {
+    const wrap = document.querySelector('.raid-game-wrap');
+    if(wrap) { raidCanvas.width = wrap.clientWidth; raidCanvas.height = wrap.clientHeight; }
   }
-}
-
-function syncRaidMoveFromHold() {
-  if (!rState.running) return;
-  if (raidInputState.leftHeld && !raidInputState.rightHeld) {
-    raidMove(-1);
-  } else if (raidInputState.rightHeld && !raidInputState.leftHeld) {
-    raidMove(1);
-  } else {
-    raidStop();
-  }
-}
-
-function raidPressLeft(e) {
-  if (e) e.preventDefault();
-  raidInputState.leftHeld = true;
-  syncRaidMoveFromHold();
-}
-
-function raidReleaseLeft(e) {
-  if (e) e.preventDefault();
-  raidInputState.leftHeld = false;
-  syncRaidMoveFromHold();
-}
-
-function raidPressRight(e) {
-  if (e) e.preventDefault();
-  raidInputState.rightHeld = true;
-  syncRaidMoveFromHold();
-}
-
-function raidReleaseRight(e) {
-  if (e) e.preventDefault();
-  raidInputState.rightHeld = false;
-  syncRaidMoveFromHold();
-}
-
-function raidPressShoot(e) {
-  if (e) e.preventDefault();
-  if (!rState.running) return;
-  raidInputState.shootHeld = true;
-  raidShoot();
-
-  if (raidInputState.shootTimer) clearInterval(raidInputState.shootTimer);
-  raidInputState.shootTimer = setInterval(() => {
-    if (raidInputState.shootHeld && rState.running) raidShoot();
-  }, 130);
-}
-
-function raidReleaseShoot(e) {
-  if (e) e.preventDefault();
-  raidInputState.shootHeld = false;
-  if (raidInputState.shootTimer) {
-    clearInterval(raidInputState.shootTimer);
-    raidInputState.shootTimer = null;
-  }
-}
-
-function setupRaidTouchControls() {
-  if (raidInputState.handlersBound) return;
-
-  const controls = document.getElementById('raid-controls');
-  if (controls) {
-    controls.addEventListener('contextmenu', (e) => e.preventDefault());
-  }
-
-  const bindPointer = () => {
-    if (!raidCanvas) return;
-
-    const onPointerDown = (e) => {
-      if (!rState.running) return;
-      if (e.pointerType === 'mouse' && e.button !== 0) return;
-      raidInputState.pointerId = e.pointerId;
-      raidInputState.dragActive = true;
-      raidInputState.dragOffsetX = e.clientX - rState.player.x;
-      try { raidCanvas.setPointerCapture(e.pointerId); } catch (_) {}
-    };
-
-    const onPointerMove = (e) => {
-      if (!rState.running || !raidInputState.dragActive || raidInputState.pointerId !== e.pointerId) return;
-      const margin = (raidCanvas.width - rState.canyonWidth) / 2;
-      const newX = e.clientX - raidInputState.dragOffsetX;
-      rState.player.x = Math.max(margin, Math.min(raidCanvas.width - margin - rState.player.w, newX));
-      rState.player.vx = 0;
-    };
-
-    const stopDrag = (e) => {
-      if (raidInputState.pointerId !== e.pointerId) return;
-      raidInputState.dragActive = false;
-      raidInputState.pointerId = null;
-    };
-
-    raidCanvas.addEventListener('pointerdown', onPointerDown, { passive: true });
-    raidCanvas.addEventListener('pointermove', onPointerMove, { passive: true });
-    raidCanvas.addEventListener('pointerup', stopDrag, { passive: true });
-    raidCanvas.addEventListener('pointercancel', stopDrag, { passive: true });
-  };
-
-  bindPointer();
-  window.addEventListener('resize', resizeRaidCanvas, { passive: true });
-  window.addEventListener('orientationchange', resizeRaidCanvas, { passive: true });
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', resizeRaidCanvas, { passive: true });
-  }
-
-  raidInputState.handlersBound = true;
 }
 
 function initDesertRaidGame() {
   document.getElementById('raid-overlay').style.display = 'none';
   raidCanvas = document.getElementById('raid-canvas');
   raidCtx = raidCanvas.getContext('2d', { alpha: false });
-  resizeRaidCanvas();
-  setupRaidTouchControls();
+  const wrap = document.querySelector('.raid-game-wrap');
+  raidCanvas.width = wrap.clientWidth; raidCanvas.height = wrap.clientHeight;
   
   rState = {
     running: true, score: 0, energy: 100, speed: 6, offsetY: 0, combo: 0, comboTimer: 0, lives: 3, padWasMoving: false,
@@ -1870,7 +1652,7 @@ function updateRaidUI() {
   const f = Math.max(0, Math.min(100, rState.energy));
   document.getElementById('raid-fuel-fill').style.width = f + '%';
   const livesEl = document.getElementById('raid-lives');
-  if (livesEl) livesEl.textContent = '❤️'.repeat(Math.max(0, rState.lives));
+  if (livesEl) livesEl.textContent = 'â‌¤ï¸ڈ'.repeat(Math.max(0, rState.lives));
   
   const updateSkillBtn = (id, skill) => {
     const btn = document.getElementById(id);
@@ -2234,7 +2016,7 @@ function drawRaid() {
       raidCtx.fillStyle = '#0a2a2a'; raidCtx.strokeStyle = '#00ffff'; raidCtx.lineWidth = 2;
       raidCtx.fillRect(e.x, e.y, e.w, e.h); raidCtx.strokeRect(e.x, e.y, e.w, e.h);
       raidCtx.fillStyle = '#00ffff'; raidCtx.font = 'bold 16px Arial';
-      raidCtx.fillText('⚡', e.x + 4, e.y + e.h/2 + 6);
+      raidCtx.fillText('âڑ،', e.x + 4, e.y + e.h/2 + 6);
     } else if (e.type === 'boss') {
       raidCtx.shadowBlur = 20; raidCtx.shadowColor = '#ff0000';
       raidCtx.fillStyle = '#110000'; raidCtx.strokeStyle = '#ff0000'; raidCtx.lineWidth = 3;
@@ -2288,17 +2070,11 @@ function raidGameOver() {
   if (currentUser) {
     if (!currentUser.raidBest || rState.score > currentUser.raidBest) {
       currentUser.raidBest = rState.score;
-      showToast(currentLang === 'ar' ? 'رقم قياسي نيون جديد!' : 'New Neon Record!');
+      showToast(currentLang === 'ar' ? 'ط±ظ‚ظ… ظ‚ظٹط§ط³ظٹ ظ†ظٹظˆظ† ط¬ط¯ظٹط¯!' : 'New Neon Record!');
     }
     saveUser(currentUser);
   }
   document.getElementById('raid-overlay').style.display = 'flex';
-  document.getElementById('raid-msg').textContent = (currentLang === 'ar' ? 'تحطمت! النقاط: ' : 'CRASHED! Score: ') + Math.floor(rState.score);
+  document.getElementById('raid-msg').textContent = (currentLang === 'ar' ? 'طھط­ط·ظ…طھ! ط§ظ„ظ†ظ‚ط§ط·: ' : 'CRASHED! Score: ') + Math.floor(rState.score);
 }
-
-
-
-
-
-
 
